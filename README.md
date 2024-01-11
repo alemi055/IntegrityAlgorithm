@@ -9,14 +9,15 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
     a) Psi deletion
     b) SL2 deletion
     c) MSD point mutation
-6. **Small internal deletions**: identified using ProSeq-IT;
-           - $>$  50 nt deleted in *gag*
-           - $>$ 50 nt deleted in *pol*
-           - $>$ 30 nt deleted in *vif*
-           - $>$ 15 nt deleted in *vpr*
-           - $>$ 11 nt deleted in *tat* exon 1 only, or $>$ 15 nt deleted in complete *tat*
-           - $>$ 18 nt deleted in *rev*
-           - $>$ 12 nt deleted in *vpu*
-           - $>$ 31 nt deleted in *nef* (a defective *nef* is not considered a defect for the integrity)
-           - $>$ 100 nt deleted in *env*
+6. **Small internal deletions**: identified using ProSeq-IT;<br>
+   to be considered intact, they must have a start codon, no premature stop codons, no frameshifts, and no deletion >5% of ORF<br>
+     - \> 50 nt deleted in *gag*
+     - \> 50 nt deleted in *pol*
+     - \> 30 nt deleted in *vif*
+     - \> 15 nt deleted in *vpr*
+     - \> 11 nt deleted in *tat* exon 1 only, or \> 15 nt deleted in complete *tat*
+     - \> 18 nt deleted in *rev*
+     - \> 12 nt deleted in *vpu*
+     - \> 31 nt deleted in *nef* (a defective *nef* is not considered a defect for the integrity)
+     - \> 100 nt deleted in *env*
 8. **Intact**

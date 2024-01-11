@@ -1,10 +1,17 @@
 # IntegrityAlgorithm
 
-The algorithm automatizes the pipeline developed by Dr. Caroline Dufour:
+**The algorithm automatizes the pipeline developed by Dr. Caroline Dufour:**
 - Sannier, G., Dubé, M., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Combined single-cell transcriptional, translational, and genomic profiling reveals HIV-1 reservoir diversity](https://doi.org/10.1016/j.celrep.2021.109643). *Cell Rep* **36**, 109643 (2021).
 - Dufour, C., ..., Fromentin, R., & Chomont, N. [Phenotypic characterization of single CD4+ T cells harboring genetically intact and inducible HIV genomes](https://doi.org/10.1038/s41467-023-36772-x). *Nat Commun* **14**, 1115 (2023).
 - Dubé, M., Tastet, O., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Spontaneous HIV expression during suppressive ART is associated with the magnitude and function of HIV-specific CD4+ and CD8+ T cells](https://doi.org/10.1016/j.chom.2023.08.006). *Cell Host Microbe* **13**, 1507-1522 (2023).
 - Dufour, C., ..., & Chomont, N. [Near full-length HIV sequencing in multiple tissues collected postmortem reveals shared clonal expansions across distinct reservoirs during ART](https://doi.org/10.1016/j.celrep.2023.113053). *Cell Rep* **42**, 113053 (2023).
+
+**Los Alamos National Laboratory (LANL)** <br>
+- HIV Database QCTool: https://www.hiv.lanl.gov/content/sequence/QC/index.html
+- HIV Database Gene Cutter: https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html
+
+**NIH National Cancer Institute** <br>
+- Proviral Sequence Annotation & Intactness Test (ProSeq-IT): https://psd.cancer.gov/tools/pvs_annot.php
 
 ### Defects
 

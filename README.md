@@ -106,5 +106,6 @@ If you use the IntegrityAlgorithm, please cite this repository.
 
 # Contact information
 If there are any questions, please contact: <br>
-Audrée Lemieux lemieux.audree@gmail.com
+Audrée Lemieux <br>
+lemieux.audree@gmail.com
 

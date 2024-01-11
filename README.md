@@ -105,6 +105,6 @@ Clonality_Analysis(threshold)
 If you use the IntegrityAlgorithm, please cite this repository.
 
 # Contact information
-Audrée Lemieux <br>
-lemieux.audree@gmail.com
+If there are any questions, please contact: <br>
+Audrée Lemieux lemieux.audree@gmail.com
 

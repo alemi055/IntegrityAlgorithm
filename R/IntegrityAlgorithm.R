@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on December 6, 2023
+# Updated on January 11, 2023
 # Command version
 
 ########################################################################################
@@ -24,7 +24,7 @@
                                     ##########################
 
 # MAIN FUNCTION 1 - HIV INTEGRITY ANALYSIS
-HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE){
+HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE, analyses = 4){
   # (str, str, str, log, log) - > None
   #
   # Input:
@@ -33,15 +33,33 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
   #   - ProseqIT_rx: the name of the summary .xls file downloaded from ProSeq-IT
   #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
   #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
+  #   - analyses: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
   #
   # Analyzes the results from QCTool, GeneCutter, ProseqIT, as well as our manual
   # assessment with Geneious, and combine them. Exports a CSV file summarizing
   # the integrity of all queried sequences, including their defects (if applicable).
 
-  QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
-  GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
-  ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
-  IntegrateInfo(template_filename) # Integrate info
+  # Double check the parameters input
+  check_template(template_filename)
+  check_QCTool(QCTool_summary)
+  check_ProseqIT(ProseqIT_rx)
+  check_both_links(template_filename)
+  check_logical(RefSeq, ProseqIT_RefSeq)
+  check_integer(analyses)
+
+  if (analyses == 1){
+    QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
+  }else if (analyses == 2){
+    GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
+    ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
+  }else if (analyses == 3){
+    IntegrateInfo(template_filename) # Integrate info
+  }else if (analyses == 4){
+    QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
+    GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
+    ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
+    IntegrateInfo(template_filename) # Integrate info
+  }
 }
 
 
@@ -166,20 +184,20 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
   gene_hyperlinks <- as.character(sapply(line, function(x){strsplit(x, ">aa<")[[1]][1]}))
   gene_hyperlinks <- paste0("https://www.hiv.lanl.gov", gene_hyperlinks)
 
-  # Add columns: "start_codon"
-  # If there is a start codon: will write the name in start_codon
-  AnalyzedQCTool <- read.table("tmp/Analyzed_QCTool.csv", sep = "\t", header = T) # Read Analyzed_QCTool file
-  # AnalyzedQCTool <- AnalyzedQCTool[order(AnalyzedQCTool$SeqName),]
-  GC_excel <- as.data.frame(cbind(Name = AnalyzedQCTool$SeqName)) # Should be in the same order than the QCTool file
+  # # Add columns: "start_codon"
+  # # If there is a start codon: will write the name in start_codon
+  # AnalyzedQCTool <- read.table("tmp/Analyzed_QCTool.csv", sep = "\t", header = T) # Read Analyzed_QCTool file
+  # # AnalyzedQCTool <- AnalyzedQCTool[order(AnalyzedQCTool$SeqName),]
+  # GC_excel <- as.data.frame(cbind(Name = AnalyzedQCTool$SeqName)) # Should be in the same order than the QCTool file
 
   # Read webpages
   genes <- c("Gag", "Pol", "Vif", "Vpr", "Tat", "Rev", "Vpu", "Env", "Nef")
 
-  data_list <- vector(mode = 'list', length = nrow(AnalyzedQCTool))
-  data_list_stop <- vector(mode = 'list', length = nrow(AnalyzedQCTool))
-  # AnalyzedQCTool <- AnalyzedQCTool[order(AnalyzedQCTool$SeqName),]
-  names(data_list) <- AnalyzedQCTool$SeqName
-  names(data_list_stop) <- AnalyzedQCTool$SeqName
+  # data_list <- vector(mode = 'list', length = nrow(AnalyzedQCTool))
+  # data_list_stop <- vector(mode = 'list', length = nrow(AnalyzedQCTool))
+  # # AnalyzedQCTool <- AnalyzedQCTool[order(AnalyzedQCTool$SeqName),]
+  # names(data_list) <- AnalyzedQCTool$SeqName
+  # names(data_list_stop) <- AnalyzedQCTool$SeqName
 
   pb <- txtProgressBar(min = 1, max = length(gene_hyperlinks), style = 3, width = 50, char = "=") # Add progress bar
   cat("\nNow analyzing the results from Gene Cutter...\n")
@@ -193,6 +211,7 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
     tmp <- tmp[length(tmp)]
 
     if (length(grep(tmp, genes)) > 0){
+
       # Find the start codons
       webpage_gene <- getURL(gene_hyperlinks[i])
       lines_gene <- strsplit(webpage_gene, "\n")[[1]]
@@ -209,21 +228,35 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
       if (tmp != "Pol"){ # Only exception for start codon
         # Does the gene have a start codon?
         parsed_df <- parse_GeneCutter(lines_start)
+
+        if (i == 1){ # Create the data frame and data list to store the analyzed data
+          if (RefSeq){
+            names <- parsed_df$seqn[2:(which(is.na(parsed_df$seqn))[1]-1)] # First one is the RefSeq (if in the Results)
+          }else{
+            names <- parsed_df$seqn[1:(which(is.na(parsed_df$seqn))[1]-1)]
+          }
+          GC_excel <- as.data.frame(cbind(Name = names)) # Should be in the same order than the QCTool file
+          data_list <- vector(mode = 'list', length = length(names))
+          data_list_stop <- vector(mode = 'list', length = length(names))
+          names(data_list) <- names
+          names(data_list_stop) <- names
+        }
+
         parsed_df <- parsed_df[1:((which(is.na(parsed_df[1]) & is.na(parsed_df[2]))[1])-1),]  # Only keep first positions
         if (RefSeq){ # If RefSeq is present - by default = TRUE
           parsed_df <- parsed_df[-1,] # First one is the reference sequence
         }
         # parsed_df <- parsed_df[order(parsed_df$seqn),]
-        if (!identical(names(data_list), parsed_df$seqn)){
-          last_c <- as.character(sapply(parsed_df$seqn, function(x){str_sub(x, -1)}))
-          pos <- which(last_c == "_")
-          if (length(pos) >= 1){
-            for (i in pos){
-              parsed_df$seqn[i] <- str_sub(parsed_df$seqn[i], 1, -2)
-            }
-          }
-        }
-        parsed_df <- parsed_df[match(names(data_list), parsed_df$seqn),]
+        # if (!identical(names(data_list), parsed_df$seqn)){
+        #   last_c <- as.character(sapply(parsed_df$seqn, function(x){str_sub(x, -1)}))
+        #   pos <- which(last_c == "_")
+        #   if (length(pos) >= 1){
+        #     for (i in pos){
+        #       parsed_df$seqn[i] <- str_sub(parsed_df$seqn[i], 1, -2)
+        #     }
+        #   }
+        # }
+        # parsed_df <- parsed_df[match(names(data_list), parsed_df$seqn),]
 
         for (j in 1:nrow(parsed_df)){
           tmp2 <- strsplit(parsed_df$seq[j], "")[[1]]
@@ -249,7 +282,7 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
       }
     }
   }
-  rm(parsed_df, pb, i, j, k, line, lines, lines_gene, lines_start, lines_stop, tmp, tmp1, tmp2, tmp3, tmp4, webpage, webpage_gene) # Clean space
+  rm(parsed_df, pb, i, j, k, line, lines, lines_gene, lines_start, lines_stop, tmp, tmp1, tmp2, tmp3, tmp4, webpage, webpage_gene, names) # Clean space
 
   # Add to Excel
   newcol <- NULL # Start codons
@@ -391,6 +424,11 @@ IntegrateInfo <- function(filename){
   ProseqIT_excel <- ProseqIT_excel[order(ProseqIT_excel$Name),]
   QCTool_excel <- QCTool_excel[order(QCTool_excel$SeqName),]
   GC_excel <- GC_excel[order(GC_excel$Name),]
+
+  # Check if the seq names of all analyzed tools are the same. If not, compute error
+  if (!(all(sapply(list(manual_excel$Name, ProseqIT_excel$Name, QCTool_excel$SeqName, GC_excel$Name), FUN = identical, manual_excel$Name)))){
+    stop("\nThe number of sequences or the sequence names are not the same (or are not in the same order) in all files.")
+  }
 
   # Intactness summary + sequence length + number of main defects + empty column
   intact_summary <- as.data.frame(cbind(Name = ProseqIT_excel[,1], seq_length = ProseqIT_excel[,2]))
@@ -543,20 +581,6 @@ IntegrateInfo <- function(filename){
   intact_summary <- cbind(intact_summary[,c(1:3)], main_defect, intact_summary[,4:ncol(intact_summary)])
   rm(i, tmp) # Clean space
 
-  # # Add info per donor
-  # # donors <- get_donors(intact_summary)
-  # donors <- unique(sapply(intact_summary$Name, function(x){strsplit(x, "_")[[1]][1]}))
-  # tmp <- add_info_per_donor(donors, intact_summary)
-  # intact_summary[nrow(intact_summary) + 1,] <- NA # Put a line before the summary
-  # intact_summary <- rbind(intact_summary, tmp)
-  # rm(tmp) # Clean space
-  #
-  # # Add total for everything
-  # tmp <- add_info_all(donors, intact_summary)
-  # intact_summary[nrow(intact_summary) + 1,] <- NA # Put a line before the total summary
-  # intact_summary <- rbind(intact_summary, tmp)
-  # rm(tmp) # Clean space
-
   # Remove title of "empty column"
   colnames(intact_summary) <- gsub("empty_column", "", colnames(intact_summary))
 
@@ -586,18 +610,6 @@ IntegrateInfo <- function(filename){
 
   # Add column for number of main defects
   intact_main <- cbind(intact_main[,c(1:3)], n_main_defects = intact_summary$n_main_defects, empty_column = NA, intact_main[,c(4:ncol(intact_main))])
-
-  # # Add info per donor
-  # tmp <- add_info_per_donor(donors, intact_main)
-  # intact_main[nrow(intact_main) + 1,] <- NA # Put a line before the summary
-  # intact_main <- rbind(intact_main, tmp)
-  # rm(tmp) # Clean space
-  #
-  # # Add total for everything
-  # tmp <- add_info_all(donors, intact_main)
-  # intact_main[nrow(intact_main) + 1,] <- NA # Put a line before the total summary
-  # intact_main <- rbind(intact_main, tmp)
-  # rm(tmp) # Clean space
 
   # Remove title of "empty column"
   colnames(intact_main) <- gsub("empty_column", "", colnames(intact_main))
@@ -1177,6 +1189,186 @@ env_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
   return(tmp)
 }
 
+
+# Function 8
+check_template <- function(template_filename){
+  # (str) -> bool
+  #
+  # Input:
+  #   - template_filename: the name of the Template file
+  #
+  # Returns TRUE if the template file provided is good, or FALSE otherwise
+
+  files_directory <- list.files()
+
+  if (!grepl(".xlsx$", template_filename)){
+    stop("\n  The template file provided is not an Excel file (.xlsx).")
+  }else if (length(grep(template_filename, files_directory)) == 0){
+    stop("\n  The template file provided could not be found in your current directory.")
+  }else if (!all(excel_sheets(template_filename) == c("ProseqIT_criteria", "Manual_assessment", "Hyperlinks"))){
+    stop("\n  One or more sheets are missing from the template file provided.")
+  }
+}
+
+
+# Function 9
+check_QCTool <- function(QCTool_summary){
+  # (str) -> bool
+  #
+  # Input:
+  #   - QCTool_summary: the name of the summary .txt file downloaded from QCTool's output
+  #
+  # Returns TRUE if the file provided is good, or FALSE otherwise
+
+  files_directory <- list.files()
+
+  if (!grepl(".txt$", QCTool_summary)){
+    stop("\n  The QCTool summary file provided is not a text file (.txt).")
+  }else if (length(which(files_directory == QCTool_summary)) == 0){
+    stop("\n  The QCTool summary file provided could not be found in your current directory.")
+  }else{
+    tmp <- read.table(QCTool_summary, header = T, sep = " ")
+    if (length(grep("SeqName", colnames(tmp))) == 0){
+      stop("\n  The column \'SeqName\' is at least missing from your file.")
+    }
+  }
+}
+
+
+# Function 10
+check_link_QC <- function(hyperlink){
+  # (str) -> bool
+  #
+  # Input:
+  #   - hyperlink: URL link of LANL's HIV Sequence Database's QCTool's results
+  #
+  # Returns TRUE if the URL link provided is good, or FALSE otherwise
+
+  lines <- getURL(hyperlink)
+
+  if (!grepl("https://", hyperlink)){
+    stop("\n  The URL link provided does not start with \'https://'.")
+  }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
+    stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
+  }else if (!grepl("/download/QC/.*/summary.html", hyperlink)){
+    stop("\n  The URL link provided does not contain the results from QCTool.")
+  }else if (grepl("The document has moved", lines)){
+    stop("\n  The URL link provided for QCTool has expired.")
+  }
+}
+
+
+# Function 11
+check_link_GC <- function(hyperlink){
+  # (str) -> bool
+  #
+  # Input:
+  #   - hyperlink: URL link of LANL's HIV Sequence Database's Gene Cutter's results
+  #
+  # Returns TRUE if the URL link provided is good, or FALSE otherwise
+
+  lines <- getURL(hyperlink)
+
+  if (!grepl("https://", hyperlink)){
+    stop("\n  The URL link provided does not start with \'https://'.")
+  }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
+    stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
+  }else if (!grepl("/tmp/GENE_CUTTER/.*/out.html", hyperlink)){
+    stop("\n  The URL link provided does not contain the results from Gene Cutter.")
+  }else if (grepl("The document has moved", lines)){
+    stop("\n  The URL link provided for Gene Cutter has expired.")
+  }
+}
+
+
+# Function 12
+check_both_links <- function(template_filename){
+  # (str) -> bool
+  #
+  # Input:
+  #   - template_filename: the name of the Template file
+  #
+  # Returns TRUE if the URL link provided are good, or FALSE otherwise
+
+  hyperlinks <- as.data.frame(read_xlsx(template_filename, sheet = "Hyperlinks"))
+
+  # QCTool
+  tmp1 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "QCTool")]
+  if (is.na(tmp1) | tmp1 == ""){
+    stop("\n  No URL link was provided for QCTool.")
+  }else{
+    check_link_QC(tmp1)
+  }
+
+  # GeneCutter
+  tmp2 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "GeneCutter")]
+  if (is.na(tmp2) | tmp1 == ""){
+    stop("\n  No URL link was provided for GeneCutter.")
+  }else{
+    check_link_GC(tmp2)
+  }
+}
+
+
+# Function 13
+check_logical <- function(RefSeq, ProseqIT_RefSeq){
+  # (bool, bool) -> None
+  #
+  # Input:
+  #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
+  #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
+  #
+  # Returns TRUE if the values are logical, or FALSE otherwise
+
+  if (!is.logical(RefSeq)){
+    stop("\n  The value provided for the argument \'RefSeq\' is not logical.")
+  }else if (!is.logical(ProseqIT_RefSeq)){
+    stop("\n  The value provided for the argument \'ProseqIT_RefSeq\' is not logical.")
+  }
+}
+
+
+# Function 14
+check_integer <- function(analyses){
+  # (int) -> None
+  #
+  # Input:
+  #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
+  #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
+  #   - Analyses: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
+  #
+  # Returns TRUE if the values are logical, or FALSE otherwise
+
+  if (analyses != 1 & analyses != 2 & analyses != 3 & analyses != 4){
+    stop("\n  The value provided for the argument \'analyses\' is not an integer between 1 and 4.")
+  }
+}
+
+
+# Function 15
+check_ProseqIT <- function(ProseqIT_rx){
+  # (str) -> bool
+  #
+  # Input:
+  #   - ProseqIT_rx: the name of the summary .xls file downloaded from ProSeq-IT
+  #
+  # Returns TRUE if the file provided is good, or FALSE otherwise
+
+  files_directory <- list.files()
+
+  if (!grepl(".xls$", ProseqIT_rx)){
+    stop("\n  The ProSeq-IT results file provided is not an Excel file (.xls and not .xlsx).")
+  }else if (length(which(files_directory == ProseqIT_rx)) == 0){
+    stop("\n  The ProSeq-IT results file provided could not be found in your current directory.")
+  }else{
+    tmp <- read.table(ProseqIT_rx, header = T, sep = "\t", row.names = NULL, fill = TRUE)
+    if (length(grep("ID", tmp[1])) == 0){
+      stop("\n  The column \'ID\' is at least missing from your file.")
+    }
+  }
+}
+
 ########################################################################################
 ########################################################################################
 ########################################################################################
+

@@ -24,9 +24,9 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
 8. **Intact**
 
 
-## Running the algorithm
+# Running the algorithm
 
-The algorithm requires X files to run:
+The algorithm requires **3 files** to run:
 1. **Excel template that contains 3 tabs**
    - _ProseqIT_criteria_: used for the analysis of ProSeq-IT
    - _Manual_assessment_: contains the results of the manual assessment with Geneious (to identify inversions)
@@ -36,24 +36,59 @@ The algorithm requires X files to run:
 
 The Excel template can be found in this repo.
 
-## Installation
+# Installation
 
-### R/RStudio
-
-Install and download the R package `devtools`
-
-```
-install.packages("devtools")
-```
-
-Load `devtools`
-
-```
-library(devtools)
-```
+### From R/RStudio
 
 Install `IntegrityAlgorithm` from Github
 
 ```
+install.packages("devtools")
 install_github("alemi055/IntegrityAlgorithm")
 ```
+
+# Usage
+
+## Within R
+
+### HIV_IntegrityAnalysis()
+
+To analyze the intactness of HIV proviruses, run the function `HIV_IntegrityAnalysis()` <br>
+1. The algorithm will first analyse the results from QCTool to identify ORFs containing stop codons and hypermutated sequences.
+2. It will then analyse the results from Gene Cutter to obtain the start and stop codons, if applicable, of and within each ORF.
+3. Next, it will analyse the results from ProSeq-IT for large and small internal deletions.
+4. Finally, all results from QCTool, Gene Cutter, ProSeq-IT, and the manual assessment with Geneious (through the Excel template) will be combined to assess the intactness of the HIV proviruses.
+
+```
+HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE, analyses = 4)
+```
+
+Arguments:<br>
+- `template_filename` [required argument] the Excel template containing the inversions manual assessment and the hyperlinks for QCTool and Gene Cutter.
+- `QCTool_summary` [required argument] the text file containing the results from QCTool.
+- `ProseqIT_rx` [required argument] the Excel file containing the results from ProSeq-IT.
+- `ProseqIT_RefSeq` [optional argument; default is FALSE] logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results.
+- `RefSeq` [optional argument; default is TRUE] logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results.
+- `analyses` [optional argument; default is 4] specifices the analyses to be done. 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All.
+
+### Clonality_Analysis()
+
+To analyze the clonality of the HIV proviruses, run the function `Split_files()`, then `Clonality_Analysis()` <br>
+1. Files in the FASTA file input will be splitted according to the list of donors supplied. Donors with single sequences will not be analyzed.
+2. The clonality will be assessed on each of the splitted files. A list of clones (0 different nt between two sequences) and potential clones, established by a threshold, will be output.
+
+```
+Split_files(FASTA_file, donors)
+Clonality_Analysis(threshold)
+```
+
+Arguments:<br>
+- `FASTA_file` [required argument] FASTA file containing all sequences, including the reference sequence (HXB2)
+- `donors` [required argument] str vector containing the list of donors. If more than one, use the `c()` function
+- `threshold` [optional argument; default is 5] threshold number of different nucleotides to consider two sequences as "potential clones"
+
+
+
+
+
+

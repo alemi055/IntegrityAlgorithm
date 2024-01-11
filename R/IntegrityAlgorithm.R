@@ -649,7 +649,12 @@ Split_files <- function(FASTA_file, donors){
     if (length(pos) > 0){
       # cat(paste0("Now doing donor \'", donors[i], "\'\n"))
       tmp <- all_seqs[pos]
-      write.FASTA(tmp, paste0(donors[i], "_forClonality.fasta"))
+      if (length(tmp) > 1){
+        write.FASTA(tmp, paste0(donors[i], "_forClonality.fasta"))
+      }else{
+        cat(paste0("   - The donor with the name \'", donors[i], "\' only had 1 sequence. No file created.\n"))
+      }
+      
     }else{
       cat(paste0("   - The donor with the name \'", donors[i], "\' could not be found.\n"))
     }

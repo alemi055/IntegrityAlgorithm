@@ -1,0 +1,3 @@
+exportPattern("^[[:alpha:]]+")
+import(readxl)import(RCurl)import(XML)import(stringr)import(insect)
+importFrom(ape, read.FASTA)import(alakazam)

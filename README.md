@@ -36,9 +36,7 @@ The algorithm requires **3 files** to run:
 
 The Excel template can be found in this repo.
 
-# Installation
-
-### From R/RStudio
+# Installation (from R or RStudio)
 
 Install `IntegrityAlgorithm` from Github
 
@@ -47,9 +45,7 @@ install.packages("devtools")
 install_github("alemi055/IntegrityAlgorithm")
 ```
 
-# Usage
-
-## Within R
+# Usage (within R)
 
 ### HIV_IntegrityAnalysis()
 
@@ -63,13 +59,14 @@ To analyze the intactness of HIV proviruses, run the function `HIV_IntegrityAnal
 HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE, analyses = 4)
 ```
 
-Arguments:<br>
-- `template_filename` [required argument] the Excel template containing the inversions manual assessment and the hyperlinks for QCTool and Gene Cutter.
-- `QCTool_summary` [required argument] the text file containing the results from QCTool.
-- `ProseqIT_rx` [required argument] the Excel file containing the results from ProSeq-IT.
-- `ProseqIT_RefSeq` [optional argument; default is FALSE] logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results.
-- `RefSeq` [optional argument; default is TRUE] logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results.
-- `analyses` [optional argument; default is 4] specifices the analyses to be done. 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All.
+| Argument | Required/Optional | Note |
+| --- | --- | --- |
+| `template_filename` | Required | Excel template containing the inversions manual assessment and the hyperlinks for QCTool and Gene Cutter |
+|`QCTool_summary` | Required | Text file containing the results from QCTool |
+| `ProseqIT_rx` | Required | Excel file containing the results from ProSeq-IT |
+| `ProseqIT_RefSeq` | Optional; default if `FALSE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results |
+| `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
+| `analyses` | optional argument; default is `4` | Specifies the analyses to be done. <br> 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All |
 
 ### Clonality_Analysis()
 
@@ -81,14 +78,33 @@ To analyze the clonality of the HIV proviruses, run the function `Split_files()`
 Split_files(FASTA_file, donors)
 Clonality_Analysis(threshold)
 ```
+| Argument | Required/Optional | Note |
+| --- | --- | --- |
+| `FASTA_file` | Required | FASTA file containing all sequences, including the reference sequence (HXB2) |
+| `donors` | Required | Str vector containing the list of donors. If more than one, use the `c()` function |
+| `threshold` | Optional; default is `5` | Threshold number of different nucleotides to consider two sequences as "potential clones" |
 
-Arguments:<br>
-- `FASTA_file` [required argument] FASTA file containing all sequences, including the reference sequence (HXB2)
-- `donors` [required argument] str vector containing the list of donors. If more than one, use the `c()` function
-- `threshold` [optional argument; default is 5] threshold number of different nucleotides to consider two sequences as "potential clones"
+## Output
 
+**tmp folder**
+| Output file | Note |
+| --- | --- |
+| `Analyzed_GeneCutter.csv` | Analyzed results from Gene Cutter. <br> Details, for each sequence, the list of ORFs that have start and premature stop codons |
+| `Analyzed_ProseqIT.csv` | Analyzed results from ProSeq-IT. <br> Details, for each sequence, the sequence length, the presence (binary: 0 [absence] and 1 [presence]) of large internal deletions, $\Psi$ mutations, and small internal deletions in each of the ORFs. For the ORFs, the list of detailed defects is also included |
+| `Analyzed_QCTool.csv` | Analyzed results from QCTool. <br> Details, for each sequence, the number of stop codons, the list of stop codons, the number of incomplete codons, and the presence or absence of hypermutations |
+| `intactness_detailedsummary.csv` | Detailed summary of defects for all sequences. <br> Details, for each sequence, the inferred intactness, the number of "main defects" (see list 1-7 above), the "main defect", and all defects in the sequence, including in each of the ORFs. Note that this summary **does not** hierarchize the defects |
 
+**FINAL_OUTPUT folder**
+| Output file | Note |
+| --- | --- |
+| `intactness_summary.csv` | Summary of **hierarchized** defects for all sequences |
+| `[donor]_ClonalityAnalysis.csv` | Can be found in the **Clonality** subfolder. List of clones and potential clones for each of the donor's sequences |
 
+# Citation
 
+If you use the IntegrityAlgorithm, please cite this repository.
 
+# Contact information
+Audrée Lemieux <br>
+lemieux.audree@gmail.com
 

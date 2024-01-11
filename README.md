@@ -1,4 +1,5 @@
 # IntegrityAlgorithm
+
 Each provirus undergoes analysis to identify the presence of (i) inversions, (ii) hypermutations, (iii) large internal deletions, (iv) stop codons, (v) $\Psi$ defects, and (vi) small internal deletions in *gag*, *pol*, *vif*, *vpr*, *tat*, *rev*, *vpu*, *nef*, *env*, and RRE.
 
 1. **Inversions**: manually identified in the alignment using Geneious
@@ -21,3 +22,38 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
      - \> 31 nt deleted in *nef* (a defective *nef* is not considered a defect for the integrity)
      - \> 100 nt deleted in *env*
 8. **Intact**
+
+
+## Running the algorithm
+
+The algorithm requires X files to run:
+1. **Excel template that contains 3 tabs**
+   - _ProseqIT_criteria_: used for the analysis of ProSeq-IT
+   - _Manual_assessment_: contains the results of the manual assessment with Geneious (to identify inversions)
+   - _Hyperlinks_: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results
+2. Text file containing the **summary of QCTool's results** (_downloaded directly from QCTool's output_)
+3. Excel file containing **ProSeq-IT's results** (_downloaded directly from ProSeq-IT's output_)
+
+The Excel template can be found in this repo.
+
+## Installation
+
+### R/RStudio
+
+Install and download the R package `devtools`
+
+```
+install.packages("devtools")
+```
+
+Load `devtools`
+
+```
+library(devtools)
+```
+
+Install `IntegrityAlgorithm` from Github
+
+```
+install_github("alemi055/IntegrityAlgorithm")
+```

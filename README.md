@@ -75,7 +75,7 @@ To analyze the intactness of HIV proviruses, run the function `HIV_IntegrityAnal
 4. Finally, all results from QCTool, Gene Cutter, ProSeq-IT, and the manual assessment with Geneious (through the Excel template) will be combined to assess the intactness of the HIV proviruses.
 
 ```
-HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE, analyses = 4)
+HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE, analyzes = 4)
 ```
 
 | Argument | Required/Optional | Note |
@@ -85,7 +85,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 | `ProseqIT_rx` | Required | Excel file containing the results from ProSeq-IT |
 | `ProseqIT_RefSeq` | Optional; default if `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), if the reference sequence is included in the FASTA file, **rename it to "Reference_sequence"** |
 | `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
-| `analyses` | optional argument; default is `4` | Specifies the analyses to be done. <br> 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All |
+| `analyzes` | optional argument; default is `4` | Specifies the analyzes to be done. <br> 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All |
 
 ### Clonality_Analysis()
 

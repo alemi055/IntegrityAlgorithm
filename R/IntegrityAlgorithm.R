@@ -24,7 +24,7 @@ library(alakazam)
                                     ##########################
 
 # MAIN FUNCTION 1 - HIV INTEGRITY ANALYSIS
-HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = FALSE, RefSeq = TRUE, analyses = 4){
+HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = TRUE, RefSeq = TRUE, analyzes = 4){
   # (str, str, str, log, log) - > None
   #
   # Input:
@@ -33,7 +33,7 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
   #   - ProseqIT_rx: the name of the summary .xls file downloaded from ProSeq-IT
   #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
   #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
-  #   - analyses: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
+  #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
   #
   # Analyzes the results from QCTool, GeneCutter, ProseqIT, as well as our manual
   # assessment with Geneious, and combine them. Exports a CSV file summarizing
@@ -45,16 +45,16 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
   check_ProseqIT(ProseqIT_rx)
   check_both_links(template_filename)
   check_logical(RefSeq, ProseqIT_RefSeq)
-  check_integer(analyses)
+  check_integer(analyzes)
   
-  if (analyses == 1){
+  if (analyzes == 1){
     QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
-  }else if (analyses == 2){
+  }else if (analyzes == 2){
     GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
     ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
-  }else if (analyses == 3){
+  }else if (analyzes == 3){
     IntegrateInfo(template_filename) # Integrate info
-  }else if (analyses == 4){
+  }else if (analyzes == 4){
     QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
     GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
     ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
@@ -311,7 +311,7 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
 
 
 # MAIN FUNCTION 4 - PROSEQIT
-ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = FALSE){
+ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = TRUE){
   # (str) -> None
   #
   # Input:
@@ -348,7 +348,10 @@ ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = FAL
   
   # # Is the RefSeq present in the file? In theory, should not be.
   if (ProseqIT_RefSeq){
-    ProseqIT_excel <- ProseqIT_excel[-1,]
+    pos2 <- which(ProseqIT_excel$ID == "Reference_sequence")
+    if (length(pos2) > 0){
+      ProseqIT_excel <- ProseqIT_excel[-pos2,]
+    }
   }
   
   # Load the criteria for ProseqIT
@@ -624,7 +627,7 @@ IntegrateInfo <- function(filename){
   # save.image("tmp/RData/integrateinfo.RData")
   
   cat("\n############################################\n")
-  cat("\nJOB COMPLETED.\n\nThe summary of intactness can be found as a CSV file in the folder \'FINAL OUTPUT\'\nAll other temporary files (i.e., outputs of individual analyses) can be found in the \'tmp\' folder.\n\nNote: Manually confirm the Psi defects by looking at the alignment in Geneious.")
+  cat("\nJOB COMPLETED.\n\nThe summary of intactness can be found as a CSV file in the folder \'FINAL OUTPUT\'\nAll other temporary files (i.e., outputs of individual analyzes) can be found in the \'tmp\' folder.\n\nNote: Manually confirm the Psi defects by looking at the alignment in Geneious.")
 }
 
 
@@ -1334,18 +1337,18 @@ check_logical <- function(RefSeq, ProseqIT_RefSeq){
 
 
 # Function 14
-check_integer <- function(analyses){
+check_integer <- function(analyzes){
   # (int) -> None
   #
   # Input:
   #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
   #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
-  #   - Analyses: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
+  #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
   #
   # Returns TRUE if the values are logical, or FALSE otherwise
   
-  if (analyses != 1 & analyses != 2 & analyses != 3 & analyses != 4){
-    stop("\n  The value provided for the argument \'analyses\' is not an integer between 1 and 4.")
+  if (analyzes != 1 & analyzes != 2 & analyzes != 3 & analyzes != 4){
+    stop("\n  The value provided for the argument \'analyzes\' is not an integer between 1 and 4.")
   }
 }
 

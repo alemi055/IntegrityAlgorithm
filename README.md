@@ -83,7 +83,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 | `template_filename` | Required | Excel template containing the inversions manual assessment and the hyperlinks for QCTool and Gene Cutter |
 |`QCTool_summary` | Required | Text file containing the results from QCTool |
 | `ProseqIT_rx` | Required | Excel file containing the results from ProSeq-IT |
-| `ProseqIT_RefSeq` | Optional; default if `FALSE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), if the reference sequence is included in the FASTA file, rename it to "Reference_sequence" |
+| `ProseqIT_RefSeq` | Optional; default if `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), if the reference sequence is included in the FASTA file, **rename it to "Reference_sequence"** |
 | `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
 | `analyses` | optional argument; default is `4` | Specifies the analyses to be done. <br> 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All |
 

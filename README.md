@@ -39,28 +39,32 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
 8. **Intact**
 
 
-# Running the algorithm
+# Before running the algorithm
 
 The algorithm requires **3 files** to run:
 1. **Excel template that contains 3 tabs**
-   - _ProseqIT_criteria_: used for the analysis of ProSeq-IT
-   - _Manual_assessment_: contains the results of the manual assessment with Geneious (to identify inversions)
-   - _Hyperlinks_: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results
-2. Text file containing the **summary of QCTool's results** (_downloaded directly from QCTool's output_)
-3. Excel file containing **ProSeq-IT's results** (_downloaded directly from ProSeq-IT's output_)
+   - **ProseqIT_criteria** [locked]: used for the analysis of ProSeq-IT
+   - **Manual_assessment**: contains the results of the manual assessment with Geneious (to identify inversions) <br>
+     *[The user fills the names of the sequences in the "Name" column; and `Y` for inversions, or `N` otherwise, in the "Inversions" column.]*
+   - **Hyperlinks**: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results <br>
+     *[The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).]*
+2. Text file containing the **summary of QCTool's results** <br>
+*[Downloaded directly from QCTool's output]*
+3. Excel file containing **ProSeq-IT's results** <br>
+*[Downloaded directly from ProSeq-IT's output]*
 
-The Excel template can be found in this repo.
+The Excel template can be found in this repository.
 
-# Installation (from R or RStudio)
+# Installation
 
-Install `IntegrityAlgorithm` from Github
+Install the R package `IntegrityAlgorithm` from Github
 
 ```
 install.packages("devtools")
 install_github("alemi055/IntegrityAlgorithm")
 ```
 
-# Usage (within R)
+# Usage
 
 ### HIV_IntegrityAnalysis()
 

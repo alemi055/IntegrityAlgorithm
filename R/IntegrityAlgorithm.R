@@ -1302,7 +1302,9 @@ check_QCTool <- function(QCTool_summary){
   }else if (length(which(files_directory == QCTool_summary)) == 0){
     stop("\n  The QCTool summary file provided could not be found in your current directory.")
   }else{
-    tmp <- read.table(QCTool_summary, header = T, sep = " ")
+    lines <- readLines(QCTool_summary)
+    lines <- gsub("Cannot determine|Cannot Determine", "Cannotdetermine", lines)
+    tmp <- read.table(textConnection(lines), header = T, sep = " ", row.names = NULL)
     if (length(grep("SeqName", colnames(tmp))) == 0){
       stop("\n  The column \'SeqName\' is at least missing from your file.")
     }

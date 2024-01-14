@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on January 11, 2023
+# Updated on January 13, 2023
 # Command version
 
 ########################################################################################
@@ -14,8 +14,7 @@ library(RCurl)
 library(XML)
 library(stringr)
 library(ape)
-library(insect)
-library(alakazam)
+library(ips)
 
 ########################################################################################
 
@@ -678,144 +677,184 @@ Clonality_Analysis <- function(threshold = 5){
   directory <- getwd()
   fasta <- list.files(paste0(directory, "/"), pattern = "_forClonality.fasta")
   
+  if (length(fasta) == 0){
+    stop("There are no FASTA files to analyze the clonality.")
+  }
   
-  cat("\nNow analyzing the clonality...\n")
+  
+  cat("\nNow analyzing the clonality...")
+  
   
   suppressWarnings(
     for (i in fasta){
-      # print(paste0("--- Now doing ", i, " ---"))
+      # Get the number of bp for each sequence (that are not gaps)
+      cat(paste0("\n\n-- Now doing: \'", i, "\' --\n"))
+      length_df <- NULL
       seqs <- read.FASTA(i)
-      # if (RefSeq){ # Removes the RefSeq
-      #   seqs <- seqs[-1]
-      # }
+      # tmp_seqs <- NULL
+      # count <- 1
       
-      # Convert DNAbin to a character vector
-      seqs_vector <- dna2char(seqs)
-      
-      # Look at the differences between sequences
-      # Gaps are treated as universally non-matching characters
-      # Look at seqs with less than 5 (or threshold) differences - if 0 = clone, but if between 1 and threshold = potential clones
-      pairwise_matrix <- pairwiseDist(seqs_vector, dist_mat = getDNAMatrix(gap = 1))
-      
-      unique_seqs <- list()
-      seqs_names <- row.names(pairwise_matrix)
-      
-      for (j in 1:length(seqs_names)){
-        name <- seqs_names[j]
-        pos <- as.numeric(which(pairwise_matrix[j,] <= threshold))
-        
-        if (length(pos) > 1){ # If length(pos) = 1, it is only the pairwise comparison with itself. It needs to be at least 2 for a duplicate.
-          pos <- pos[-which(pos == j)] # Remove self-comparison
-          tmp <- NULL
-          tmp2 <- NULL
-          for (k in pos){
-            if (pairwise_matrix[j,k] == 0){ # identical seq
-              tmp <- c(tmp, seqs_names[k])
-            }else if (pairwise_matrix[j,k] >= 1 & pairwise_matrix[j,k] <= threshold){ # potential seq
-              tmp2 <- c(tmp2, seqs_names[k])
-            }
-          }
-          # tmp <- paste0(tmp, collapse = ", ")
-          # tmp2 <- paste0(tmp2, collapse = ", ")
-          tmp <- as.data.frame(cbind(tmp))
-          tmp2 <- as.data.frame(cbind(tmp2))
-          
-          if (nrow(tmp2) == 0){ # Only clones
-            unique_seqs[[name]] <- list(tmp, data.frame())
-          }else if (nrow(tmp) == 0){ # Only potential clones
-            unique_seqs[[name]] <- list(data.frame(), tmp2)
-          }else{
-            unique_seqs[[name]] <- list(tmp, tmp2)
-          }
-          
-        }else{
-          unique_seqs <- c(unique_seqs, list(NULL))
-          names(unique_seqs)[length(unique_seqs)] <- name
-        }
+      for (j in 1:length(seqs)){
+        tmp <- as.character(seqs[j])[[1]]
+        gaps <- which(tmp == "-")
+        nt <- setdiff(1:length(tmp), gaps)
+        length_df <- rbind(length_df, cbind(name = names(seqs)[j], nbases = length(nt), ngaps = length(gaps)))
       }
-      rm(j, k, name, pos, tmp, tmp2) # Clean space
+      length_df <- as.data.frame(length_df)
+      class(length_df$nbases) <- class(length_df$ngaps) <- "numeric"
+      rm(gaps, j, nt, tmp) # Clean space
       
       
-      # Create a df from the list
-      flag <- TRUE
+      # Create a distance matrix with the difference of number of total bp
+      # It does not look at the differences in individual nucleotides yet
+      length_matrix <- NULL
+      for (j in 1:nrow(length_df)){
+        length <- length_df$nbases[j]
+        length_matrix <- rbind(length_matrix, sapply(1:nrow(length_df), function(x){abs(length_df$nbases[x]-length)}))
+      }
+      row.names(length_matrix) <- colnames(length_matrix) <- length_df$name
+      rm(length, j) # Clean space
+      
+      
+      # Clones are 100% identical (0 different nt)
+      # Potential clones are maximum X (threshold, by default = 5) different nt
+      clones_df <- potentialclones_df <- NULL
+      new_seqs <- seqs
       j <- 1
-      n <- length(unique_seqs)
-      clonality_df <- NULL
+      flag <- TRUE
       
       while (flag){
-        if (j <= n){
-          tmp <- unique_seqs[[j]]
+        if (j <= length(new_seqs)){
+          pb <- txtProgressBar(min = 1, max = length(new_seqs), style = 3, width = 50, char = "=") # Add progress bar
+          setTxtProgressBar(pb, j)
           
-          if (length(tmp) > 0){ # If there are clones/potential clones
-            if (nrow(tmp[[1]]) > nrow(tmp[[2]])){
-              nrow <- nrow(tmp[[1]])
-            }else{
-              nrow <- nrow(tmp[[2]])
-            }
+          seqname <- names(new_seqs[j])
+          pos1 <- which(row.names(length_matrix) == seqname)
+          pos_same_length <- which(length_matrix[j,] <= threshold) # Clones or potential clones
+          
+          if (length(pos_same_length) > 1){ # If length(pos) = 1, it is only the pairwise comparison with itself. It needs to be at least 2 for a clone.
+            pos_same_length <- pos_same_length[-which(pos_same_length == pos1)] # Remove self-comparison
+            matrix <- mafft(new_seqs[c(pos1, pos_same_length)], method = "genafpair") # Align with MAFFT
             
-            tmp_df <- data.frame(name = rep(names(unique_seqs)[j], nrow), clones = NA, potential_clones = NA) # Create "empty" df
-            if (nrow(tmp[[1]]) > 0){
-              tmp_df$clones[1:nrow(tmp[[1]])] <- as.character(unlist(tmp[[1]]))
-              
-              for (k in as.character(unlist(tmp[[1]]))){ # Remove seqs (downstream) to avoid duplicates
-                pos <- which(names(unique_seqs) == k)
-                if (length(pos) > 0){
-                  unique_seqs <- unique_seqs[-pos]
+            clones <- potentialclones <- NULL
+            
+            # Check for clones
+            nseqs <- dim(matrix)[1]
+            nbp <- dim(matrix)[2]
+            
+            k <- 1 # k: row
+            l <- 1 # l: col
+            flag2 <- TRUE
+            
+            while(flag2){
+              if (k == 1){
+                if (k+l <= nseqs){
+                  tmp <- matrix[c(k, k+l), ]
+                  ndiff <- identical_seqs(tmp)
+                  length_clone <- length_matrix[j, pos_same_length[l]] # Difference of length between the two sequences
+                  
+                  if (ndiff == 0 & length_clone == 0){ # That is a clone ONLY if the length is the same
+                    clones <- c(clones, row.names(length_matrix)[pos_same_length[l]])
+                  }else if (ndiff == 0 & (length_clone > 0 & length_clone <= threshold)){ # If diff is 0, but length_clone <= threshold
+                    potentialclones <- c(potentialclones, row.names(length_matrix)[pos_same_length[l]])
+                  }else if (ndiff > 0 & ndiff <= threshold){ # That is a potential clone
+                    potentialclones <- c(potentialclones, row.names(length_matrix)[pos_same_length[l]])
+                  }
+                  l <- l + 1
+                }else{
+                  k <- k + 1
+                  l <- 1 # Reset l
+                  flag2 <- TRUE
                 }
+                
+              }else{
+                flag2 <- FALSE
               }
             }
-            if (nrow(tmp[[2]]) > 0){
-              tmp_df$potential_clones[1:nrow(tmp[[2]])] <- as.character(unlist(tmp[[2]]))
+            
+            clones <- unique(clones)
+            potentialclones <- unique(potentialclones)
+
+            
+            # Remove clones from list to avoid duplicates
+            if (length(clones) > 0){
+              new_seqs <- new_seqs[-match(clones, names(new_seqs))]
+              length_matrix <- length_matrix[-match(clones, row.names(length_matrix)),]
+              length_matrix <- length_matrix[,-match(clones, colnames(length_matrix))]
             }
             
-            clonality_df <- rbind(clonality_df, tmp_df)
-            j <- j + 1
-            n <- length(unique_seqs)
+            # Put the clones/potential clones in their respective dfs
+            if(length(clones) == 0){
+              clones <- NA
+            }
+            if (length(potentialclones) == 0){
+              potentialclones <- NA
+            }
             
-          }else{ # If there are no clones
-            clonality_df <- rbind(clonality_df, data.frame(name = names(unique_seqs)[j], clones = NA, potential_clones = NA))
+            clones_df <- rbind(clones_df, cbind(sequence = seqname, clones = clones))
+            potentialclones_df <- rbind(potentialclones_df, cbind(sequence = seqname, potential_clones = potentialclones))
             j <- j + 1
-            n <- length(unique_seqs)
+          }else{
+            clones_df <- rbind(clones_df, cbind(sequence = seqname, clones = NA))
+            potentialclones_df <- rbind(potentialclones_df, cbind(sequence = seqname, potential_clones = NA))
+            j <- j + 1
           }
           
         }else{
           flag <- FALSE
         }
       }
-      rm(flag, j, n, k, nrow, tmp, tmp_df) # Clean space
+      
+      clones_df <- as.data.frame(clones_df)
+      potentialclones_df <- as.data.frame(potentialclones_df)
+      
+      rm(clones, flag, flag2, j, k, l, matrix, nbp, ndiff, nseqs, pos_same_length, pos1, potentialclones, seqname, tmp) # Clean space
       
       
-      # Number of clones and potential clones
-      clonality_df <- cbind(name = clonality_df$name, n_clones = NA, clones = clonality_df$clones, n_potential_clones = NA, potential_clones = clonality_df$potential_clones)
-      clonality_df <- as.data.frame(clonality_df)
-      unique_seq_names <- as.character(unique(na.omit(clonality_df$name)))
+      # Format for a final df
+      unique_seqs <- unique(clones_df$sequence)
+      final_df <- NULL
       
-      for (j in unique_seq_names){
-        pos <- which(clonality_df$name == j)
-        clonality_df$n_clones[pos[1]] <- length(na.omit(clonality_df$clones[pos]))
-        clonality_df$n_potential_clones[pos[1]] <- length(na.omit(clonality_df$potential_clones[pos]))
-      }
-      
-      
-      # Write the name of the unique sequence (with clones) only once
-      pos <- table(clonality_df$name)
-      pos <- names(pos)[which(pos > 1)]
-      
-      if (length(pos) > 0){
-        for (j in pos){
-          pos2 <- which(clonality_df$name == j)
-          clonality_df$name[pos2[2:length(pos2)]] <- NA
+      for (j in 1:length(unique_seqs)){
+        tmp_clones <- clones_df$clones[clones_df$sequence == unique_seqs[j]]
+        if (length(tmp_clones) > 1){
+          nclones <- length(tmp_clones)
+        }else if (!is.na(tmp_clones)){
+          nclones <- length(tmp_clones)
+        }else{
+          nclones <- 0
         }
+        
+        tmp_potentialclones <- potentialclones_df$potential_clones[potentialclones_df$sequence == unique_seqs[j]]
+        if (length(tmp_potentialclones) > 1){
+          npotentialclones <- length(tmp_potentialclones)
+        }else if (!is.na(tmp_potentialclones)){
+          nclones <- length(tmp_potentialclones)
+        }else{
+          npotentialclones <- 0
+        }
+        final_df <- rbind(final_df, cbind(unique_sequence = unique_seqs[j], nclones = nclones, clones = tmp_clones, npotential_clones = npotentialclones, potential_clones = tmp_potentialclones))
       }
+      final_df <- as.data.frame(final_df)
+      class(final_df$nclones) <- class(final_df$npotential_clones) <- "numeric"
+      rm(j, tmp_clones, nclones, tmp_potentialclones, npotentialclones) # Clean space
       
+      
+      # Write unique seqs only once
+      pos <- names(table(final_df$unique_sequence))[which(table(final_df$unique_sequence) > 1)]
+      for (j in 1:length(pos)){
+        tmp <- which(final_df$unique_sequence == pos[j])
+        final_df$unique_sequence[tmp[2:length(tmp)]] <- final_df$nclones[tmp[2:length(tmp)]] <- final_df$npotential_clones[tmp[2:length(tmp)]] <- NA
+      }
+      rm(j, pos, tmp) # Clean space
       
       # Export
+      if (!file.exists("FINAL_OUTPUT")){system("mkdir FINAL_OUTPUT")}
       if (!file.exists("FINAL_OUTPUT/Clonality")){system("mkdir FINAL_OUTPUT/Clonality")}
-      write.table(clonality_df, paste0("FINAL_OUTPUT/Clonality/", gsub("forClonality.fasta", "ClonalityAnalysis.csv", i)), na = "", row.names = F, sep = "\t", quote = F)
+      write.table(final_df, paste0("FINAL_OUTPUT/Clonality/", gsub("forClonality.fasta", "ClonalityAnalysis.csv", i)), na = "", row.names = F, sep = "\t", quote = F)
     }
   )
-
-  cat("Done.\n")
+  cat("\n\nDone.\n")
 }
 
 
@@ -1374,6 +1413,28 @@ check_ProseqIT <- function(ProseqIT_rx){
       stop("\n  The column \'ID\' is at least missing from your file.")
     }
   }
+}
+
+
+# Function 16
+identical_seqs <- function(matrix){
+  # (matrix) -> int
+  #
+  # Input:
+  #   - matrix: matrix of sequences aligned with MAFFT
+  #
+  # Returns the number of different nucleotides between the aligned sequences
+  
+  nbp <- dim(matrix)[2]
+  count <- 0 # n of differences
+  
+  for (j in 1:nbp){
+    tmp <- table(as.character(as.character(matrix[,j]))) # Get the number of different bases
+    if (length(tmp) != 1){ # Same base for all seqs. Continue reading
+      count <- count + 1
+    }
+  }
+  return(count)
 }
 
 ########################################################################################

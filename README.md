@@ -37,33 +37,40 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
 
 # Before running the algorithm
 
-**1. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)**
-Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2).
-The results will be returned to you by email.
+**1. Rename your sequences** <br>
+Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
 
-**2. Submit your FASTA file to [HIV Database Gene Cutter](https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html)**
-Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2).
-Input sequences are pre-aligned
-The results will be returned to you by email.
+**2. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
+- Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.
+- Download the results as a text file: ``Download Summary``
 
+**3. Submit your FASTA file to [HIV Database Gene Cutter](https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html)** <br>
+- Check :ballot_box_with_check: ``Input sequences are pre-aligned``.
+- Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.
 
+**4. Prepare your FASTA file for submission to ProSeq-IT** <br>
+As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), if the reference sequence is included in the FASTA file, it has to be renamed. <br>
+- Duplicate your FASTA file.
+- In this duplicated file, rename the reference sequence (usually HXB2) to **"Reference_sequence"**.
 
-**1. Complete the Excel template**
+**5. Submit your FASTA file (containing the renamed reference sequence) to [ProSeq-IT](https://psd.cancer.gov/tools/pvs_annot.php)** <br>
+- Select the Subtype ``B``.
+- Make sure that the number of sequences in ProSeq-IT's output corresponds to the number of sequences in your FASTA file.
+- Download the results as an Excel file: ``Download Result``
 
+**6. Complete the Excel template** <br>
+The Excel template can be found in this [repository](https://github.com/alemi055/IntegrityAlgorithm/blob/main/Template_IntegrityAlgorithm.xlsx).
 The Excel templates contains 3 tabs:
 - ProseqIT_criteria [locked]: used for the analysis of ProSeq-IT
 - Manual_assessment: contains the results of the manual assessment with Geneious (to identify inversions) <br>
-*[The user fills the names of the sequences in the "Name" column; and `Y` for inversions, or `N` otherwise, in the "Inversions" column.]*
-- Hyperlinks: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results <br>
-*[The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).]*
-
-
-2. Text file containing the **summary of QCTool's results** <br>
-*[Downloaded directly from QCTool's output]*
-3. Excel file containing **ProSeq-IT's results** <br>
-*[Downloaded directly from ProSeq-IT's output]*
-
-The Excel template can be found in this repository.
+    - The user fills the names of the sequences in the "Name" column; and `Y` for inversions, or `N` otherwise, in the "Inversions" column.
+- Hyperlinks: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results
+    - The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).
+ 
+### Files in directory before running the algorithm
+- The Excel template
+- The text file containing QCTool's results
+- The Excel file containing ProSeq-IT's results
 
 # Installation
 
@@ -95,7 +102,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 | `ProseqIT_rx` | Required | Excel file containing the results from ProSeq-IT |
 | `ProseqIT_RefSeq` | Optional; default if `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), if the reference sequence is included in the FASTA file, **rename it to "Reference_sequence"** |
 | `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
-| `analyzes` | optional argument; default is `4` | Specifies the analyzes to be done. <br> 1: QCTool only, 2: Gene Cutter and ProSeq-IT only, 3: IntegrateInfo only, 4: All |
+| `analyzes` | optional argument; default is `4` | Specifies the analyzes to be done: <br> ``1`` QCTool only <br>``2`` Gene Cutter and ProSeq-IT only <br> ``3`` IntegrateInfo only <br> ``4`` All |
 
 ### Clonality_Analysis()
 
@@ -121,7 +128,7 @@ Clonality_Analysis(threshold)
 | `Analyzed_GeneCutter.csv` | Analyzed results from Gene Cutter. <br> Details, for each sequence, the list of ORFs that have start and premature stop codons |
 | `Analyzed_ProseqIT.csv` | Analyzed results from ProSeq-IT. <br> Details, for each sequence, the sequence length, the presence (binary: 0 [absence] and 1 [presence]) of large internal deletions, $\Psi$ mutations, and small internal deletions in each of the ORFs. For the ORFs, the list of detailed defects is also included |
 | `Analyzed_QCTool.csv` | Analyzed results from QCTool. <br> Details, for each sequence, the number of stop codons, the list of stop codons, the number of incomplete codons, and the presence or absence of hypermutations |
-| `intactness_detailedsummary.csv` | Detailed summary of defects for all sequences. <br> Details, for each sequence, the inferred intactness, the number of "main defects" (see list 1-7 above), the "main defect", and all defects in the sequence, including in each of the ORFs. Note that this summary **does not** hierarchize the defects |
+| `intactness_detailedsummary.csv` | Detailed summary of defects for all sequences. <br> Details, for each sequence, the inferred intactness, the number of "main defects" (see list 1-7 above), the "main defect", and all defects in the sequence, including in each of the ORFs. <br> Note that this summary **does not** hierarchize the defects |
 
 **FINAL_OUTPUT folder**
 | Output file | Note |

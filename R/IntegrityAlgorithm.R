@@ -635,11 +635,12 @@ Split_files <- function(FASTA_file, donors){
   # (str, str) -> None
   #
   # Input:
-  #   - FASTA_file: name of the FASTA files containing all aligned sequences.
+  #   - FASTA_file: name of the FASTA file containing all aligned sequences.
   #   - donors: name of the donors. Use c() if more than one donor.
   #
   # Split the sequences in individual files (per donor)
   
+  check_FASTA(FASTA_file)
   all_seqs <- read.FASTA(FASTA_file)
   
   # pb <- txtProgressBar(min = 1, max = length(donors), style = 3, width = 50, char = "=") # Add progress bar
@@ -1447,6 +1448,25 @@ check_ProseqIT <- function(ProseqIT_rx){
 
 
 # Function 16
+check_FASTA <- function(FASTA_file){
+  # (str) -> bool
+  #
+  # Input:
+  #   - FASTA_file: name of the FASTA file containing all aligned sequences.
+  #
+  # Returns TRUE if the file provided is good, or FALSE otherwise
+  
+  files_directory <- list.files()
+  
+  if (!grepl(".fasta$", FASTA_file)){
+    stop("\n  The FASTA file provided is not a FASTA file (.fasta).")
+  }else if (length(which(files_directory == FASTA_file)) == 0){
+    stop("\n  The FASTA file provided could not be found in your current directory.")
+  }
+}
+
+
+# Function 17
 identical_seqs <- function(matrix){
   # (matrix) -> int
   #

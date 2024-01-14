@@ -6,10 +6,6 @@
 - Dubé, M., Tastet, O., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Spontaneous HIV expression during suppressive ART is associated with the magnitude and function of HIV-specific CD4+ and CD8+ T cells](https://doi.org/10.1016/j.chom.2023.08.006). *Cell Host Microbe* **13**, 1507-1522 (2023).
 - Dufour, C., ..., & Chomont, N. [Near full-length HIV sequencing in multiple tissues collected postmortem reveals shared clonal expansions across distinct reservoirs during ART](https://doi.org/10.1016/j.celrep.2023.113053). *Cell Rep* **42**, 113053 (2023).
 
-**Los Alamos National Laboratory (LANL)** <br>
-- HIV Database QCTool: https://www.hiv.lanl.gov/content/sequence/QC/index.html
-- HIV Database Gene Cutter: https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html
-
 **NIH National Cancer Institute** <br>
 - Proviral Sequence Annotation & Intactness Test (ProSeq-IT): https://psd.cancer.gov/tools/pvs_annot.php
 
@@ -41,13 +37,27 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
 
 # Before running the algorithm
 
-The algorithm requires **3 files** to run:
-1. **Excel template that contains 3 tabs**
-   - **ProseqIT_criteria** [locked]: used for the analysis of ProSeq-IT
-   - **Manual_assessment**: contains the results of the manual assessment with Geneious (to identify inversions) <br>
-     *[The user fills the names of the sequences in the "Name" column; and `Y` for inversions, or `N` otherwise, in the "Inversions" column.]*
-   - **Hyperlinks**: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results <br>
-     *[The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).]*
+**1. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)**
+Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2).
+The results will be returned to you by email.
+
+**2. Submit your FASTA file to [HIV Database Gene Cutter](https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html)**
+Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2).
+Input sequences are pre-aligned
+The results will be returned to you by email.
+
+
+
+**1. Complete the Excel template**
+
+The Excel templates contains 3 tabs:
+- ProseqIT_criteria [locked]: used for the analysis of ProSeq-IT
+- Manual_assessment: contains the results of the manual assessment with Geneious (to identify inversions) <br>
+*[The user fills the names of the sequences in the "Name" column; and `Y` for inversions, or `N` otherwise, in the "Inversions" column.]*
+- Hyperlinks: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results <br>
+*[The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).]*
+
+
 2. Text file containing the **summary of QCTool's results** <br>
 *[Downloaded directly from QCTool's output]*
 3. Excel file containing **ProSeq-IT's results** <br>

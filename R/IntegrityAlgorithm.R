@@ -848,6 +848,34 @@ Clonality_Analysis <- function(threshold = 5){
       }
       rm(j, pos, tmp) # Clean space
       
+      
+      # Write clones/potential clones only once
+      unique_seqs <- unique(na.omit(clones_df$sequence))
+      for (j in unique_seqs){
+        pos <- which(final_df$unique_sequence == j)
+        pos <- pos:final_df$nclones[pos]
+        clones <- table(final_df$clones)
+        potentialclones <- table(final_df$potential_clones)
+        
+        tmp1 <- which(clones > 1)
+        if (length(tmp1) > 0){
+          for (k in tmp1){
+            name <- names(clones)[k]
+            pos_in_df <- which(final_df$clones[pos] == name)
+            final_df$clones[pos_in_df[2:length(pos_in_df)]] <- NA
+          }
+        }
+        
+        tmp2 <- which(potentialclones > 1)
+        if (length(tmp2) > 0){
+          for (k in tmp2){
+            name <- names(potentialclones)[k]
+            pos_in_df <- which(final_df$potential_clones[pos] == name)
+            final_df$potential_clones[pos_in_df[2:length(pos_in_df)]] <- NA
+          }
+        }
+      }
+      
       # Export
       if (!file.exists("FINAL_OUTPUT")){system("mkdir FINAL_OUTPUT")}
       if (!file.exists("FINAL_OUTPUT/Clonality")){system("mkdir FINAL_OUTPUT/Clonality")}

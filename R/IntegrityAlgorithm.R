@@ -829,7 +829,7 @@ Clonality_Analysis <- function(threshold = 5){
         if (length(tmp_potentialclones) > 1){
           npotentialclones <- length(tmp_potentialclones)
         }else if (!is.na(tmp_potentialclones)){
-          nclones <- length(tmp_potentialclones)
+          npotentialclones <- length(tmp_potentialclones)
         }else{
           npotentialclones <- 0
         }

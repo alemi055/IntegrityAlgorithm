@@ -97,7 +97,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 | `template_filename` | Required | Excel template containing the inversions manual assessment and the hyperlinks for QCTool and Gene Cutter |
 |`QCTool_summary` | Required | Text file containing the results from QCTool |
 | `ProseqIT_rx` | Required | Excel file containing the results from ProSeq-IT |
-| `ProseqIT_RefSeq` | Optional; default if `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. It should be renamed to "Reference_sequence" (see [instructions](#-Before-running-the-algorithm))  |
+| `ProseqIT_RefSeq` | Optional; default if `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. It should be renamed to "Reference_sequence" (see [instructions](#before-running-the-algorithm))  |
 | `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
 | `analyzes` | optional argument; default is `4` | Specifies the analyzes to be done: <br> ``1`` QCTool only <br>``2`` Gene Cutter and ProSeq-IT only <br> ``3`` IntegrateInfo only <br> ``4`` All |
 
@@ -125,7 +125,7 @@ Clonality_Analysis(threshold)
 | `Analyzed_GeneCutter.csv` | Analyzed results from Gene Cutter. <br> Details, for each sequence, the list of ORFs that have start and premature stop codons |
 | `Analyzed_ProseqIT.csv` | Analyzed results from ProSeq-IT. <br> Details, for each sequence, the sequence length, the presence (binary: ``0`` [absence] and ``1`` [presence]) of large internal deletions, $\Psi$ mutations, and small internal deletions in each of the ORFs. For the ORFs, the list of detailed defects is also included |
 | `Analyzed_QCTool.csv` | Analyzed results from QCTool. <br> Details, for each sequence, the number of stop codons, the list of stop codons, the number of incomplete codons, and the presence or absence of hypermutations |
-| `intactness_detailedsummary.csv` | Detailed summary of defects for all sequences. <br> Details, for each sequence, the inferred intactness, the number of "main defects" (see [list 1-7 above](###-Defects)), the "main defect", and all defects in the sequence, including in each of the ORFs. <br> Note that this summary **does not** hierarchize the defects |
+| `intactness_detailedsummary.csv` | Detailed summary of defects for all sequences. <br> Details, for each sequence, the inferred intactness, the number of "main defects" (see [list 1-7 above](#defects)), the "main defect", and all defects in the sequence, including in each of the ORFs. <br> Note that this summary **does not** hierarchize the defects |
 
 **FINAL_OUTPUT folder**
 | Output file | Note |

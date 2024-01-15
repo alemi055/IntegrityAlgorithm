@@ -55,8 +55,7 @@ As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), 
 - Make sure that the number of sequences in ProSeq-IT's output corresponds to the number of sequences in your FASTA file.
 - Download the results as an Excel file: ``Download Result``
 
-**6. Complete the Excel template** <br>
-The Excel template can be found in this [repository](https://github.com/alemi055/IntegrityAlgorithm/blob/main/Template_IntegrityAlgorithm.xlsx).
+**6. Complete the [Excel template](https://github.com/alemi055/IntegrityAlgorithm/blob/main/Template_IntegrityAlgorithm.xlsx)** <br>
 The Excel templates contains 3 tabs:
 - ProseqIT_criteria [locked]: used for the analysis of ProSeq-IT
 - Manual_assessment: contains the results of the manual assessment with Geneious (to identify inversions) <br>

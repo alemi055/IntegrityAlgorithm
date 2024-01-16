@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on January 13, 2023
+# Updated on January 16, 2023
 # Command version
 
 ########################################################################################
@@ -631,50 +631,20 @@ IntegrateInfo <- function(filename){
 
 
 # MAIN FUNCTION 6
-Split_files <- function(FASTA_file, donors){
-  # (str, str) -> None
+Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
+  # (int) -> None
   #
   # Input:
   #   - FASTA_file: name of the FASTA file containing all aligned sequences.
   #   - donors: name of the donors. Use c() if more than one donor.
-  #
-  # Split the sequences in individual files (per donor)
-  
-  check_FASTA(FASTA_file)
-  all_seqs <- read.FASTA(FASTA_file)
-  
-  # pb <- txtProgressBar(min = 1, max = length(donors), style = 3, width = 50, char = "=") # Add progress bar
-  cat("\nNow splitting sequences into individual files...\n")
-  
-  for (i in 1:length(donors)){
-    # setTxtProgressBar(pb, i)
-    pos <- grep(donors[i], names(all_seqs))
-    if (length(pos) > 0){
-      # cat(paste0("Now doing donor \'", donors[i], "\'\n"))
-      tmp <- all_seqs[pos]
-      if (length(tmp) > 1){
-        write.FASTA(tmp, paste0(donors[i], "_forClonality.fasta"))
-      }else{
-        cat(paste0("   - The donor with the name \'", donors[i], "\' only had 1 sequence. No file created.\n"))
-      }
-      
-    }else{
-      cat(paste0("   - The donor with the name \'", donors[i], "\' could not be found.\n"))
-    }
-  }
-  cat("Done.\n")
-}
-
-
-# MAIN FUNCTION 7
-Clonality_Analysis <- function(threshold = 5){
-  # (int) -> None
-  #
-  # Input:
   #   - threshold: the threshold of different nucleotides between two sequences to consider them as "potential clones"
   #
   # Analyzes the clonality of the sequences
   
+  # Split_files
+  Split_files(FASTA_file, donors)
+  
+  # Find splitted FASTA files
   directory <- getwd()
   fasta <- list.files(paste0(directory, "/"), pattern = "_forClonality.fasta")
   
@@ -683,13 +653,13 @@ Clonality_Analysis <- function(threshold = 5){
   }
   
   
-  cat("\nNow analyzing the clonality...")
+  cat("\n\nNow analyzing the clonality...")
   
   
   suppressWarnings(
     for (i in fasta){
       # Get the number of bp for each sequence (that are not gaps)
-      cat(paste0("\n\n-- Now doing: \'", i, "\' --\n"))
+      cat(paste0("\n \'", i, "\'\n"))
       length_df <- NULL
       seqs <- read.FASTA(i)
       # tmp_seqs <- NULL
@@ -883,7 +853,7 @@ Clonality_Analysis <- function(threshold = 5){
       write.table(final_df, paste0("FINAL_OUTPUT/Clonality/", gsub("forClonality.fasta", "ClonalityAnalysis.csv", i)), na = "", row.names = F, sep = "\t", quote = F)
     }
   )
-  cat("\n\nDone.\n")
+  cat("\nDone.\n")
 }
 
 
@@ -1485,6 +1455,42 @@ identical_seqs <- function(matrix){
     }
   }
   return(count)
+}
+
+
+# Function 18
+Split_files <- function(FASTA_file, donors){
+  # (str, str) -> None
+  #
+  # Input:
+  #   - FASTA_file: name of the FASTA file containing all aligned sequences.
+  #   - donors: name of the donors. Use c() if more than one donor.
+  #
+  # Split the sequences in individual files (per donor)
+  
+  check_FASTA(FASTA_file)
+  all_seqs <- read.FASTA(FASTA_file)
+  
+  # pb <- txtProgressBar(min = 1, max = length(donors), style = 3, width = 50, char = "=") # Add progress bar
+  cat("\nNow splitting sequences into individual files...\n")
+  
+  for (i in 1:length(donors)){
+    # setTxtProgressBar(pb, i)
+    pos <- grep(donors[i], names(all_seqs))
+    if (length(pos) > 0){
+      # cat(paste0("Now doing donor \'", donors[i], "\'\n"))
+      tmp <- all_seqs[pos]
+      if (length(tmp) > 1){
+        write.FASTA(tmp, paste0(donors[i], "_forClonality.fasta"))
+      }else{
+        cat(paste0("   - The donor with the name \'", donors[i], "\' only had 1 sequence. No file created.\n"))
+      }
+      
+    }else{
+      cat(paste0("   - The donor with the name \'", donors[i], "\' could not be found.\n"))
+    }
+  }
+  cat("Done.\n")
 }
 
 ########################################################################################

@@ -64,6 +64,7 @@ The Excel templates contains 3 tabs:
     - The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).
  
 ### Files in directory before running the algorithm
+- [x] The FASTA file containing the aligned sequences + reference sequence (HXB2)
 - [x] The Excel template
 - [x] The text file containing QCTool's results
 - [x] The Excel file containing ProSeq-IT's results

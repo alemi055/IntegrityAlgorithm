@@ -392,8 +392,8 @@ ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = TRU
   ProseqIT_summary <- cbind(ProseqIT_summary, vif_vpr_tat_rev_vpu_nef_small_delet(ProseqIT_excel, ProseqIT_criteria, AnalyzedGeneCutter)) # Vif, Vpr, Tat, Rev, Vpu, Nef
   ProseqIT_summary <- cbind(ProseqIT_summary, env_small_delet(ProseqIT_excel, ProseqIT_criteria, AnalyzedGeneCutter)) # Env
   
-  # Invert Env and Nef
-  ProseqIT_summary <- ProseqIT_summary[,c(1:18, 21, 22, 19, 20)]
+  # # Invert Env and Nef
+  # ProseqIT_summary <- ProseqIT_summary[,c(1:18, 21, 22, 19, 20)]
   
   # RRE status
   pos <- which(ProseqIT_excel$rre_status != "good")
@@ -544,8 +544,8 @@ IntegrateInfo <- function(filename){
   intact_summary <- cbind(intact_summary, n_small_inter_delet = sum_sid, tmp)
   rm(tmp, i, small_intern_delet, sum_sid, colnames) # Clean space
   
-  # # Invert Env and Nef for small internal deletions
-  # intact_summary <- intact_summary[,c(1:17, 19, 18, 20)]
+  # Invert Env and Nef for small internal deletions
+  intact_summary <- intact_summary[,c(1:16, 18, 17, 19)]
 
   ##################################################
   

@@ -1170,11 +1170,7 @@ vif_vpr_tat_rev_vpu_nef_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, 
     
     # Look at stop codons
     # If only Tat2, not a defect
-    if (i == "Tat"){
-      pos2 <- match(Analyzed_GeneCutter$Name[grep("Tat1", Analyzed_GeneCutter$stop_codon)], row.names(tmp)) # If there is a stop codon in Tat, it's only going to be "counted" if it's in Tat1
-    }else{
-      pos2 <- match(Analyzed_GeneCutter$Name[grep(i, Analyzed_GeneCutter$stop_codon)], row.names(tmp))
-    }
+    pos2 <- match(Analyzed_GeneCutter$Name[grep(i, Analyzed_GeneCutter$stop_codon)], row.names(tmp))
     tmp[pos2,1] <- 1
     comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], paste0(lower_protein, "_stop_codon"))}else{comments[[x]] <- comments[[x]]}})
     

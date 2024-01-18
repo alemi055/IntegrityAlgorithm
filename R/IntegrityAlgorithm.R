@@ -273,9 +273,25 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
         lines_stop <- lines_gene[(tmp3+1):(tmp3+tmp4-1)]
         parsed_df_stop <- parse_GeneCutter_stop(lines_stop)
         
-        for (k in 1:nrow(parsed_df_stop)){
-          if (!grepl("^K03455", parsed_df_stop$seqn[k])){
-            data_list_stop[[parsed_df_stop$seqn[k]]] <- c(data_list_stop[[parsed_df_stop$seqn[k]]], tmp)
+        # For Tat only: a defect in Tat2 only is not considered a defect
+        # Write Tat if Tat defect; write Tat and Tat1 if defect in Tat exon 1 only, Tat and Tat2 if defect in
+        # Tat exon 2 only, or Tat, Tat1, and Tat2 if defects in both exons
+        
+        if (tmp == "Tat"){
+          for (k in 1:nrow(parsed_df_stop)){
+            if (!grepl("^K03455", parsed_df_stop$seqn[k])){
+              if (as.numeric(parsed_df_stop$pos[k]) > 72){ # Tat 2
+                data_list_stop[[parsed_df_stop$seqn[k]]] <- c(data_list_stop[[parsed_df_stop$seqn[k]]], "Tat", "Tat2")
+              }else if (as.numeric(parsed_df_stop$pos[k]) <= 72){
+                data_list_stop[[parsed_df_stop$seqn[k]]] <- c(data_list_stop[[parsed_df_stop$seqn[k]]], "Tat", "Tat1")
+              }
+            }
+          }
+        }else{
+          for (k in 1:nrow(parsed_df_stop)){
+            if (!grepl("^K03455", parsed_df_stop$seqn[k])){
+              data_list_stop[[parsed_df_stop$seqn[k]]] <- c(data_list_stop[[parsed_df_stop$seqn[k]]], tmp)
+            }
           }
         }
       }
@@ -465,16 +481,15 @@ IntegrateInfo <- function(filename){
   # 4 Stop codons #
   
   # Stop codons in all proteins, except for Nef and Tat2 = defective
-  # Look at GeneCutter first. If there is a Tat stop codon, look at QCTool results to see
-  # if it's only in Tat2
+  # Look at GeneCutter if it's only in Tat2
   stop_codon <- NULL
   
   for (i in 1:nrow(GC_excel)){
     stops <- strsplit(GC_excel$stop_codon[i], ", ")[[1]]
     stops <- gsub("Nef", "", stops) # Nef
     if (length(grep("Tat", stops)) > 0){
-      if ((length(grep("Tat2", QCTool_excel$stop_comments[i])) > 0) & (length(grep("Tat1", QCTool_excel$stop_comments[i])) == 0)){ # Is Tat2 in QCTool results?
-        stops <- gsub("Tat", "", stops) # Tat is not a def
+      if ((length(grep("Tat2", stops)) > 0) & (length(grep("Tat1", stops)) == 0)){ # Is it only Tat2?
+        stops <- gsub("Tat", "", stops) # Tat is not a defect
       }
     }
     stops <- str_subset(stops, ".+") # Keep only those with at least one character
@@ -987,7 +1002,7 @@ gag_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
   # First, look if there is a start codon
   name <- "StartCodon"
   tmp_seqn <- Analyzed_GeneCutter$Name[setdiff(1:nrow(Analyzed_GeneCutter), grep("Gag", Analyzed_GeneCutter$start_codon))] # Those who don't have a Start codon
-  if (length(tmp_seqn)){
+  if (length(tmp_seqn) > 0){
     pos2 <- match(tmp_seqn, row.names(tmp))
     tmp[pos2,1] <- 1
     comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], name)}else{comments[[x]] <- comments[[x]]}})
@@ -1121,7 +1136,7 @@ vif_vpr_tat_rev_vpu_nef_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, 
     colnames(tmp) <- paste0(i, c("_defects", "_defects_comments"))
     row.names(tmp) <- ProseqIT_rx$ID
     if (length(cols) != length(pos)){
-      cat(i, "small internal deletion: You have a problem with the column names of ProseqIT results.\n\n")
+      stop(paste0(i, "small internal deletion: You have a problem with the column names of ProseqIT results.\n\n"))
     }
     
     # Note each defect in the "comments" section
@@ -1132,7 +1147,7 @@ vif_vpr_tat_rev_vpu_nef_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, 
     # First, look if there is a start codon
     name <- "StartCodon"
     tmp_seqn <- Analyzed_GeneCutter$Name[setdiff(1:nrow(Analyzed_GeneCutter), grep(i, Analyzed_GeneCutter$start_codon))] # Those who don't have a Start codon
-    if (length(tmp_seqn)){
+    if (length(tmp_seqn) > 0){
       pos2 <- match(tmp_seqn, row.names(tmp))
       tmp[pos2,1] <- 1
       comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], name)}else{comments[[x]] <- comments[[x]]}})
@@ -1154,7 +1169,12 @@ vif_vpr_tat_rev_vpu_nef_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, 
     }
     
     # Look at stop codons
-    pos2 <- match(Analyzed_GeneCutter$Name[grep(i, Analyzed_GeneCutter$stop_codon)], row.names(tmp))
+    # If only Tat2, not a defect
+    if (i == "Tat"){
+      pos2 <- match(Analyzed_GeneCutter$Name[grep("Tat1", Analyzed_GeneCutter$stop_codon)], row.names(tmp)) # If there is a stop codon in Tat, it's only going to be "counted" if it's in Tat1
+    }else{
+      pos2 <- match(Analyzed_GeneCutter$Name[grep(i, Analyzed_GeneCutter$stop_codon)], row.names(tmp))
+    }
     tmp[pos2,1] <- 1
     comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], paste0(lower_protein, "_stop_codon"))}else{comments[[x]] <- comments[[x]]}})
     
@@ -1199,7 +1219,7 @@ env_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
   # First, look if there is a start codon
   name <- "StartCodon"
   tmp_seqn <- Analyzed_GeneCutter$Name[setdiff(1:nrow(Analyzed_GeneCutter), grep("Env", Analyzed_GeneCutter$start_codon))]
-  if (length(tmp_seqn)){
+  if (length(tmp_seqn) > 0){
     pos2 <- match(tmp_seqn, row.names(tmp))
     tmp[pos2,1] <- 1
     comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], name)}else{comments[[x]] <- comments[[x]]}})

@@ -826,22 +826,12 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
       rm(j, tmp_clones, nclones, tmp_potentialclones, npotentialclones) # Clean space
       
       
-      # Write unique seqs only once
-      pos <- names(table(final_df$unique_sequence))[which(table(final_df$unique_sequence) > 1)]
-      for (j in 1:length(pos)){
-        tmp <- which(final_df$unique_sequence == pos[j])
-        final_df$unique_sequence[tmp[2:length(tmp)]] <- final_df$nclones[tmp[2:length(tmp)]] <- final_df$npotential_clones[tmp[2:length(tmp)]] <- NA
-      }
-      rm(j, pos, tmp) # Clean space
-      
-      
       # Write clones/potential clones only once
-      unique_seqs <- unique(na.omit(clones_df$sequence))
+      unique_seqs <- unique(na.omit(final_df$unique_sequence))
       for (j in unique_seqs){
         pos <- which(final_df$unique_sequence == j)
-        pos <- pos:final_df$nclones[pos]
-        clones <- table(final_df$clones)
-        potentialclones <- table(final_df$potential_clones)
+        clones <- table(final_df$clones[pos])
+        potentialclones <- table(final_df$potential_clones[pos])
         
         tmp1 <- which(clones > 1)
         if (length(tmp1) > 0){
@@ -857,10 +847,20 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
           for (k in tmp2){
             name <- names(potentialclones)[k]
             pos_in_df <- which(final_df$potential_clones[pos] == name)
-            final_df$potential_clones[pos_in_df[2:length(pos_in_df)]] <- NA
+            final_df$potential_clones[pos[pos_in_df[2:length(pos_in_df)]]] <- NA
           }
         }
       }
+      
+      
+      # Write unique seqs only once
+      pos <- names(table(final_df$unique_sequence))[which(table(final_df$unique_sequence) > 1)]
+      for (j in 1:length(pos)){
+        tmp <- which(final_df$unique_sequence == pos[j])
+        final_df$unique_sequence[tmp[2:length(tmp)]] <- final_df$nclones[tmp[2:length(tmp)]] <- final_df$npotential_clones[tmp[2:length(tmp)]] <- NA
+      }
+      rm(j, pos, tmp) # Clean space
+      
       
       # Export
       if (!file.exists("FINAL_OUTPUT")){system("mkdir FINAL_OUTPUT")}

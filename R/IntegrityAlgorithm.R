@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on January 16, 2023
+# Updated on January 19, 2023
 # Command version
 
 ########################################################################################
@@ -704,7 +704,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
       
       # Clones are 100% identical (0 different nt)
       # Potential clones are maximum X (threshold, by default = 5) different nt
-      clones_df <- potentialclones_df <- NULL
+      clones_list <- potentialclones_list <- NULL
       new_seqs <- seqs
       j <- 1
       flag <- TRUE
@@ -770,19 +770,19 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
             }
             
             # Put the clones/potential clones in their respective dfs
-            if(length(clones) == 0){
+            if (length(clones) == 0){
               clones <- NA
             }
             if (length(potentialclones) == 0){
               potentialclones <- NA
             }
             
-            clones_df <- rbind(clones_df, cbind(sequence = seqname, clones = clones))
-            potentialclones_df <- rbind(potentialclones_df, cbind(sequence = seqname, potential_clones = potentialclones))
+            clones_list[[seqname]] <- clones
+            potentialclones_list[[seqname]] <- potentialclones
             j <- j + 1
           }else{
-            clones_df <- rbind(clones_df, cbind(sequence = seqname, clones = NA))
-            potentialclones_df <- rbind(potentialclones_df, cbind(sequence = seqname, potential_clones = NA))
+            clones_list[[seqname]] <- NA
+            potentialclones_list[[seqname]] <- NA
             j <- j + 1
           }
           
@@ -790,77 +790,39 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
           flag <- FALSE
         }
       }
-      
-      clones_df <- as.data.frame(clones_df)
-      potentialclones_df <- as.data.frame(potentialclones_df)
-      
       rm(clones, flag, flag2, j, k, l, matrix, nbp, ndiff, nseqs, pos_same_length, pos1, potentialclones, seqname, tmp) # Clean space
       
       
       # Format for a final df
-      unique_seqs <- unique(clones_df$sequence)
+      unique_seqs <- unique(names(clones_list))
       final_df <- NULL
       
       for (j in 1:length(unique_seqs)){
-        tmp_clones <- clones_df$clones[clones_df$sequence == unique_seqs[j]]
+        tmp_clones <- clones_list[[unique_seqs[j]]]
         if (length(tmp_clones) > 1){
           nclones <- length(tmp_clones)
-        }else if (!is.na(tmp_clones)){
-          nclones <- length(tmp_clones)
-        }else{
+        }else if (is.na(tmp_clones)){
           nclones <- 0
+        }else if (length(tmp_clones) > 0){
+          nclones <- length(tmp_clones)
         }
         
-        tmp_potentialclones <- potentialclones_df$potential_clones[potentialclones_df$sequence == unique_seqs[j]]
+        tmp_potentialclones <- potentialclones_list[[unique_seqs[j]]]
         if (length(tmp_potentialclones) > 1){
           npotentialclones <- length(tmp_potentialclones)
-        }else if (!is.na(tmp_potentialclones)){
-          npotentialclones <- length(tmp_potentialclones)
-        }else{
-          npotentialclones <- 0
         }
-        final_df <- rbind(final_df, cbind(unique_sequence = unique_seqs[j], nclones = nclones, clones = tmp_clones, npotential_clones = npotentialclones, potential_clones = tmp_potentialclones))
+        if (is.na(tmp_potentialclones)){
+          npotentialclones <- 0
+        }else if (length(tmp_potentialclones) > 0){
+          npotentialclones <- length(tmp_potentialclones)
+        }
+        final_df <- rbind(final_df, cbind(unique_sequence = unique_seqs[j], nclones = nclones, clones = paste0(tmp_clones, collapse = ", "), npotential_clones = npotentialclones, potential_clones = paste0(tmp_potentialclones, collapse = ", ")))
       }
       final_df <- as.data.frame(final_df)
+      final_df$clones <- gsub("NA", NA, final_df$clones)
+      final_df$potential_clones <- gsub("NA", NA, final_df$potential_clones)
       class(final_df$nclones) <- class(final_df$npotential_clones) <- "numeric"
       rm(j, tmp_clones, nclones, tmp_potentialclones, npotentialclones) # Clean space
-      
-      
-      # Write clones/potential clones only once
-      unique_seqs <- unique(na.omit(final_df$unique_sequence))
-      for (j in unique_seqs){
-        pos <- which(final_df$unique_sequence == j)
-        clones <- table(final_df$clones[pos])
-        potentialclones <- table(final_df$potential_clones[pos])
-        
-        tmp1 <- which(clones > 1)
-        if (length(tmp1) > 0){
-          for (k in tmp1){
-            name <- names(clones)[k]
-            pos_in_df <- which(final_df$clones[pos] == name)
-            final_df$clones[pos_in_df[2:length(pos_in_df)]] <- NA
-          }
-        }
-        
-        tmp2 <- which(potentialclones > 1)
-        if (length(tmp2) > 0){
-          for (k in tmp2){
-            name <- names(potentialclones)[k]
-            pos_in_df <- which(final_df$potential_clones[pos] == name)
-            final_df$potential_clones[pos[pos_in_df[2:length(pos_in_df)]]] <- NA
-          }
-        }
-      }
-      
-      
-      # Write unique seqs only once
-      pos <- names(table(final_df$unique_sequence))[which(table(final_df$unique_sequence) > 1)]
-      for (j in 1:length(pos)){
-        tmp <- which(final_df$unique_sequence == pos[j])
-        final_df$unique_sequence[tmp[2:length(tmp)]] <- final_df$nclones[tmp[2:length(tmp)]] <- final_df$npotential_clones[tmp[2:length(tmp)]] <- NA
-      }
-      rm(j, pos, tmp) # Clean space
-      
       
       # Export
       if (!file.exists("FINAL_OUTPUT")){system("mkdir FINAL_OUTPUT")}

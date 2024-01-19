@@ -116,7 +116,20 @@ Clonality_Analysis(FASTA_file, donors, threshold)
 | `donors` | Required | Str vector containing the list of donors. If more than one, use the `c()` function |
 | `threshold` | Optional; default is `5` | Threshold number of different nucleotides to consider two sequences as "potential clones" |
 
-## Output
+## To confirm clones and potential clones in Geneious
+1. Import the "donor1_forClonality.fasta" file into Geneious. In the imported alignment, select all sequences.
+3. ``Extract regions`` :arrow_right: ``Extract region as a list of sequences``.
+4. Select the newly created list.
+5. ``Workflows`` :arrow_right: ``Run Workflow`` :arrow_right: ``Extract Sequences By Name``
+6. Write the name of the unique sequence in the ``Names to Extract`` box. Then, write ``, `` (comma followed by a space) and the names of the clones/potential clones [copied-pasted from the **clones** and **potential clones** columns, in the "donor1_ClonalityAnalysis.csv" output files.]
+7. From that, it is going to create a new sublist of sequences. Reselect all the sequences from this sublist and ``Extract regions``.
+8. Select all the extracted sequences from the sublist.
+9. ``Multiple Align`` :arrow_right: ``MAFFT Alignment`` <br>
+If it is a clone, a message will appear: "All sequences are identical. Options will not affect the result of the alignment". Click ``Ok``.
+10. Make sure that the **distances** between sequences are all 0 nucleotides for clones, or below the threshold value for potential clones.
+11. Repeat for all clones/potential clones.
+
+# Output
 
 **tmp folder**
 | Output file | Note |

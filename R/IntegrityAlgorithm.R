@@ -816,7 +816,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
         }else if (length(tmp_potentialclones) > 0){
           npotentialclones <- length(tmp_potentialclones)
         }
-        final_df <- rbind(final_df, cbind(unique_sequence = unique_seqs[j], nclones = nclones, clones = paste0(tmp_clones, collapse = ","), npotential_clones = npotentialclones, potential_clones = paste0(tmp_potentialclones, collapse = ", ")))
+        final_df <- rbind(final_df, cbind(unique_sequence = unique_seqs[j], nclones = nclones, clones = paste0(tmp_clones, collapse = ", "), npotential_clones = npotentialclones, potential_clones = paste0(tmp_potentialclones, collapse = ", ")))
       }
       final_df <- as.data.frame(final_df)
       final_df$clones <- gsub("NA", NA, final_df$clones)

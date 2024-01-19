@@ -103,13 +103,12 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 
 ### Clonality_Analysis()
 
-To analyze the clonality of the HIV proviruses, run the function `Split_files()`, then `Clonality_Analysis()` <br>
+To analyze the clonality of the HIV proviruses, run the function `Clonality_Analysis()` <br>
 1. Files in the FASTA file input will be splitted according to the list of donors supplied. Donors with single sequences will not be analyzed.
 2. The clonality will be assessed on each of the splitted files. A list of clones (0 different nt between two sequences) and potential clones, established by a threshold, will be output.
 
 ```
-Split_files(FASTA_file, donors)
-Clonality_Analysis(threshold)
+Clonality_Analysis(FASTA_file, donors, threshold)
 ```
 | Argument | Required/Optional | Note |
 | --- | --- | --- |

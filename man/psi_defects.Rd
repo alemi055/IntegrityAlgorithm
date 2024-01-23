@@ -1,28 +1,31 @@
-\name{parse_GeneCutter}
-\alias{parse_GeneCutter}
+\name{psi_defects}
+\alias{psi_defects}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Parse Gene Cutter's results
+Identify \Psi defects
 }
 \description{
-This function reads and parses Gene Cutter's HIV ORF's amino acid results page. It reads the lines of the web page and returns a data frame with the sequence names, the base positions, and the corresponding amino acid sequences.
+This function identifies \Psi defects in sequences based on ProSeq-IT's results. It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of \Psi defects. Further details are added in the 'Psi_defects_comments' if there is a defect.
 }
 \usage{
-parse_GeneCutter(lines)
+psi_defects(ProseqIT_rx, ProseqIT_criteria)
 }
 \arguments{
-  \item{lines}{
-lines of Gene Cutter's HIV ORF's amino acid results page
+  \item{ProseqIT_rx}{
+Data frame containing the results from ProSeq-IT (the Excel downloaded file)
+}
+  \item{ProseqIT_criteria}{
+Data frame containing, for each ProSeq-IT annotation, the criteria used to infer proviral intactness
 }
 }
 \details{
-For this function to work, the URL link to Gene Cutter's results should be input in the Excel Template file. This function is used in the main function GeneCutter_analyzes().
+For this function to work, ProSeq-IT's output Excel file must be in your current directory. This function is used in the main function ProseqIT_analyzes().
 }
 \value{
-A data frame containing, for a specific HIV ORF, the sequence names, the base positions, and the corresponding amino acid sequences.
+A data frame summarizing the \Psi defects.
 }
 \references{
-Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
+ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{
 Audrée Lemieux

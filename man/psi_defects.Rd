@@ -2,10 +2,10 @@
 \alias{psi_defects}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Identify \Psi defects
+Identify \eqn{\Psi} defects
 }
 \description{
-This function identifies \Psi defects in sequences based on ProSeq-IT's results. It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of \Psi defects. Further details are added in the 'Psi_defects_comments' if there is a defect.
+This function identifies \eqn{\Psi} defects in sequences based on ProSeq-IT's results. It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of \eqn{\Psi} defects. Further details are added in the 'Psi_defects_comments' if there is a defect.
 }
 \usage{
 psi_defects(ProseqIT_rx, ProseqIT_criteria)
@@ -22,7 +22,7 @@ Data frame containing, for each ProSeq-IT annotation, the criteria used to infer
 For this function to work, ProSeq-IT's output Excel file must be in your current directory. This function is used in the main function ProseqIT_analyzes().
 }
 \value{
-A data frame summarizing the \Psi defects.
+A data frame summarizing the {\eqn{\Psi} defects.
 }
 \references{
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}

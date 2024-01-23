@@ -22,10 +22,10 @@ For this function to work, the URL link to Gene Cutter's results should be input
 A data frame containing, for a specific HIV protein, the sequence names, the base positions, and the corresponding amino acid sequences.
 }
 \references{
-Gene Cutter website: [https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html](https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html)
+Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
 }
 \author{
-Audrée Lemieux
+Audr\'ee Lemieux
 }
 \note{
 %%  ~~further notes~~

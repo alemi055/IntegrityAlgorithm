@@ -22,7 +22,7 @@ Data frame containing, for each ProSeq-IT annotation, the criteria used to infer
 For this function to work, ProSeq-IT's output Excel file must be in your current directory. This function is used in the main function ProseqIT_analyzes().
 }
 \value{
-A data frame summarizing the {\eqn{\Psi} defects.
+A data frame summarizing the \eqn{\Psi} defects.
 }
 \references{
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}

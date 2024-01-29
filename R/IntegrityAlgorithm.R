@@ -361,7 +361,7 @@ ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = TRU
   # ProseqIT_excel[,coln] <- apply(ProseqIT_excel[,coln], 2, function(x) as.numeric(as.character(x))) # Change variables with numbers as "numerical" variables
 
   
-  # # Is the RefSeq present in the file? In theory, should not be.
+  # # Is the RefSeq present in the file? In theory, should be.
   if (ProseqIT_RefSeq){
     pos2 <- which(ProseqIT_excel$ID == "Reference_sequence")
     if (length(pos2) > 0){
@@ -1272,8 +1272,8 @@ check_link_QC <- function(hyperlink){
   
   lines <- getURL(hyperlink)
   
-  if (!grepl("https://", hyperlink)){
-    stop("\n  The URL link provided does not start with \'https://'.")
+  if ((!grepl("https://", hyperlink)) & (!grepl("http://", hyperlink))){
+    stop("\n  The URL link provided does not start with \'https://' or \'http://'.")
   }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
     stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
   }else if (!grepl("/download/QC/.*/summary.html", hyperlink)){
@@ -1295,8 +1295,8 @@ check_link_GC <- function(hyperlink){
   
   lines <- getURL(hyperlink)
   
-  if (!grepl("https://", hyperlink)){
-    stop("\n  The URL link provided does not start with \'https://'.")
+  if ((!grepl("https://", hyperlink)) & (!grepl("http://", hyperlink))){
+    stop("\n  The URL link provided does not start with \'https://' or \'http://'.")
   }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
     stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
   }else if (!grepl("/tmp/GENE_CUTTER/.*/out.html", hyperlink)){

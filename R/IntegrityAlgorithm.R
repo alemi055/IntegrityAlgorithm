@@ -149,7 +149,11 @@ QCTool_analyzes <- function(filename, summary, RefSeq = TRUE){
   cols_to_keep <- c("SeqName", "StopCodons", "stop_comments", "IncompleteCodons", "Hypermutation")
   QCTool_excel <- QCTool_excel[,(match(cols_to_keep, colnames(QCTool_excel)))]
   if (RefSeq){ # If RefSeq is present - by default = TRUE
-    QCTool_excel <- QCTool_excel[-1,] # Remove RefSeq (first line)
+    pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", QCTool_excel$SeqName)
+    if (length(pos) == 0){
+      stop("\nThe algorithm cannot find the reference sequence in QCTool's output (doesn't contain \'K03455\', \'HXB2\' or \'Reference_sequence\')")
+    }
+    QCTool_excel <- QCTool_excel[-pos,] # Remove RefSeq (first line)
   }
   rm(cols_to_keep) # Clean space
   
@@ -230,11 +234,17 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
         
         if (i == 1){ # Create the data frame and data list to store the analyzed data
           if (RefSeq){
-            names <- parsed_df$seqn[2:(which(is.na(parsed_df$seqn))[1]-1)] # First one is the RefSeq (if in the Results)
+            pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
+            if (length(pos) == 0){
+              stop("\nThe algorithm cannot find the reference sequence in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\' or \'Reference_sequence\')")
+            }
+            parsed_df <- parsed_df[-pos,]
+            names <- parsed_df$seqn[1:(which(is.na(parsed_df$seqn))[1]-1)]
           }else{
             names <- parsed_df$seqn[1:(which(is.na(parsed_df$seqn))[1]-1)]
           }
-          GC_excel <- as.data.frame(cbind(Name = names)) # Should be in the same order than the QCTool file
+          names <- parsed_df$seqn[1:(which(is.na(parsed_df$seqn))[1]-1)]
+          GC_excel <- as.data.frame(cbind(Name = names))
           data_list <- vector(mode = 'list', length = length(names))
           data_list_stop <- vector(mode = 'list', length = length(names))
           names(data_list) <- names
@@ -242,8 +252,12 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
         }
         
         parsed_df <- parsed_df[1:((which(is.na(parsed_df[1]) & is.na(parsed_df[2]))[1])-1),]  # Only keep first positions
-        if (RefSeq){ # If RefSeq is present - by default = TRUE
-          parsed_df <- parsed_df[-1,] # First one is the reference sequence
+        if (RefSeq & i != 1){ # If RefSeq is present - by default = TRUE
+          pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
+          if (length(pos) == 0){
+            stop("\nThe algorithm cannot find the reference sequence in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\' or \'Reference_sequence\')")
+          }
+          parsed_df <- parsed_df[-pos,] # First one is the reference sequence
         }
         # parsed_df <- parsed_df[order(parsed_df$seqn),]
         # if (!identical(names(data_list), parsed_df$seqn)){
@@ -363,10 +377,11 @@ ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = TRU
   
   # # Is the RefSeq present in the file? In theory, should be.
   if (ProseqIT_RefSeq){
-    pos2 <- which(ProseqIT_excel$ID == "Reference_sequence")
-    if (length(pos2) > 0){
-      ProseqIT_excel <- ProseqIT_excel[-pos2,]
+    pos2 <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", ProseqIT_excel$ID)
+    if (length(pos) == 0){
+      stop("\nThe algorithm cannot find the reference sequence in ProSeq-IT's output (has not been renamed to \'Reference_sequence\')")
     }
+    ProseqIT_excel <- ProseqIT_excel[-pos2,]
   }
   
   # Load the criteria for ProseqIT
@@ -1272,8 +1287,8 @@ check_link_QC <- function(hyperlink){
   
   lines <- getURL(hyperlink)
   
-  if ((!grepl("https://", hyperlink)) & (!grepl("http://", hyperlink))){
-    stop("\n  The URL link provided does not start with \'https://' or \'http://'.")
+  if (!grepl("https://", hyperlink)){
+    stop("\n  The URL link provided does not start with \'https://'.")
   }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
     stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
   }else if (!grepl("/download/QC/.*/summary.html", hyperlink)){
@@ -1295,8 +1310,8 @@ check_link_GC <- function(hyperlink){
   
   lines <- getURL(hyperlink)
   
-  if ((!grepl("https://", hyperlink)) & (!grepl("http://", hyperlink))){
-    stop("\n  The URL link provided does not start with \'https://' or \'http://'.")
+  if (!grepl("https://", hyperlink)){
+    stop("\n  The URL link provided does not start with \'https://'.")
   }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
     stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
   }else if (!grepl("/tmp/GENE_CUTTER/.*/out.html", hyperlink)){

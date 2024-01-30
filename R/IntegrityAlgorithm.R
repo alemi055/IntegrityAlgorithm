@@ -1374,8 +1374,6 @@ check_integer <- function(analyzes){
   # (int) -> None
   #
   # Input:
-  #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
-  #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
   #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
   #
   # Returns TRUE if the values are logical, or FALSE otherwise

@@ -151,7 +151,7 @@ QCTool_analyzes <- function(filename, summary, RefSeq = TRUE){
   if (RefSeq){ # If RefSeq is present - by default = TRUE
     pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", QCTool_excel$SeqName)
     if (length(pos) == 0){
-      stop("\nThe algorithm cannot find the reference sequence in QCTool's output (doesn't contain \'K03455\', \'HXB2\' or \'Reference_sequence\')")
+      stop("\nRefSeq = TRUE. The reference sequence could not be found in QCTool's output (doesn't contain \'K03455\', \'HXB2\', or \'Reference_sequence\')")
     }
     QCTool_excel <- QCTool_excel[-pos,] # Remove RefSeq (first line)
   }
@@ -236,7 +236,7 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
           if (RefSeq){
             pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
             if (length(pos) == 0){
-              stop("\nThe algorithm cannot find the reference sequence in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\' or \'Reference_sequence\')")
+              stop("\nRefSeq = TRUE. The reference sequence could not be found in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\', or \'Reference_sequence\')")
             }
             parsed_df <- parsed_df[-pos,]
             names <- parsed_df$seqn[1:(which(is.na(parsed_df$seqn))[1]-1)]
@@ -255,7 +255,7 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
         if (RefSeq & i != 1){ # If RefSeq is present - by default = TRUE
           pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
           if (length(pos) == 0){
-            stop("\nThe algorithm cannot find the reference sequence in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\' or \'Reference_sequence\')")
+            stop("\nRefSeq = TRUE. The reference sequence could not be found in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\', or \'Reference_sequence\')")
           }
           parsed_df <- parsed_df[-pos,] # First one is the reference sequence
         }
@@ -379,7 +379,7 @@ ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = TRU
   if (ProseqIT_RefSeq){
     pos2 <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", ProseqIT_excel$ID)
     if (length(pos) == 0){
-      stop("\nThe algorithm cannot find the reference sequence in ProSeq-IT's output (has not been renamed to \'Reference_sequence\')")
+      stop("\nProseqIT_RefSeq = TRUE. The reference sequence could not be found in ProSeq-IT's output (has not been renamed to \'Reference_sequence\')")
     }
     ProseqIT_excel <- ProseqIT_excel[-pos2,]
   }
@@ -1241,11 +1241,11 @@ check_template <- function(template_filename){
   files_directory <- list.files()
   
   if (!grepl(".xlsx$", template_filename)){
-    stop("\n  The template file provided is not an Excel file (.xlsx).")
+    stop("\nThe template file provided is not an Excel file (.xlsx).")
   }else if (length(grep(template_filename, files_directory)) == 0){
-    stop("\n  The template file provided could not be found in your current directory.")
+    stop("\nThe template file provided could not be found in your current directory.")
   }else if (!all(excel_sheets(template_filename) == c("ProseqIT_criteria", "Manual_assessment", "Hyperlinks"))){
-    stop("\n  One or more sheets are missing from the template file provided.")
+    stop("\nOne or more sheets are missing from the template file provided.")
   }
 }
 
@@ -1262,15 +1262,15 @@ check_QCTool <- function(QCTool_summary){
   files_directory <- list.files()
   
   if (!grepl(".txt$", QCTool_summary)){
-    stop("\n  The QCTool summary file provided is not a text file (.txt).")
+    stop("\nThe QCTool summary file provided is not a text file (.txt).")
   }else if (length(which(files_directory == QCTool_summary)) == 0){
-    stop("\n  The QCTool summary file provided could not be found in your current directory.")
+    stop("\nThe QCTool summary file provided could not be found in your current directory.")
   }else{
     lines <- readLines(QCTool_summary)
     lines <- gsub("Cannot determine|Cannot Determine", "Cannotdetermine", lines)
     tmp <- read.table(textConnection(lines), header = T, sep = " ", row.names = NULL)
     if (length(grep("SeqName", colnames(tmp))) == 0){
-      stop("\n  The column \'SeqName\' is at least missing from your file.")
+      stop("\nThe column \'SeqName\' is at least missing from your file.")
     }
   }
 }
@@ -1288,13 +1288,13 @@ check_link_QC <- function(hyperlink){
   lines <- getURL(hyperlink)
   
   if (!grepl("https://", hyperlink)){
-    stop("\n  The URL link provided does not start with \'https://'.")
+    stop("\nThe URL link provided does not start with \'https://'.")
   }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
-    stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
+    stop("\nThe URL link provided is not from LANL's HIV Sequence Database.")
   }else if (!grepl("/download/QC/.*/summary.html", hyperlink)){
-    stop("\n  The URL link provided does not contain the results from QCTool.")
+    stop("\nThe URL link provided does not contain the results from QCTool.")
   }else if (grepl("The document has moved", lines)){
-    stop("\n  The URL link provided for QCTool has expired.")
+    stop("\nThe URL link provided for QCTool has expired.")
   }
 }
 
@@ -1311,13 +1311,13 @@ check_link_GC <- function(hyperlink){
   lines <- getURL(hyperlink)
   
   if (!grepl("https://", hyperlink)){
-    stop("\n  The URL link provided does not start with \'https://'.")
+    stop("\nThe URL link provided does not start with \'https://'.")
   }else if (!grepl("www.hiv.lanl.gov", hyperlink)){
-    stop("\n  The URL link provided is not from LANL's HIV Sequence Database.")
+    stop("\nThe URL link provided is not from LANL's HIV Sequence Database.")
   }else if (!grepl("/tmp/GENE_CUTTER/.*/out.html", hyperlink)){
-    stop("\n  The URL link provided does not contain the results from Gene Cutter.")
+    stop("\nThe URL link provided does not contain the results from Gene Cutter.")
   }else if (grepl("The document has moved", lines)){
-    stop("\n  The URL link provided for Gene Cutter has expired.")
+    stop("\nThe URL link provided for Gene Cutter has expired.")
   }
 }
 
@@ -1336,7 +1336,7 @@ check_both_links <- function(template_filename){
   # QCTool
   tmp1 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "QCTool")]
   if (is.na(tmp1) | tmp1 == ""){
-    stop("\n  No URL link was provided for QCTool.")
+    stop("\nNo URL link was provided for QCTool.")
   }else{
     check_link_QC(tmp1)
   }
@@ -1344,7 +1344,7 @@ check_both_links <- function(template_filename){
   # GeneCutter
   tmp2 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "GeneCutter")]
   if (is.na(tmp2) | tmp1 == ""){
-    stop("\n  No URL link was provided for GeneCutter.")
+    stop("\nNo URL link was provided for GeneCutter.")
   }else{
     check_link_GC(tmp2)
   }
@@ -1362,9 +1362,9 @@ check_logical <- function(RefSeq, ProseqIT_RefSeq){
   # Returns TRUE if the values are logical, or FALSE otherwise
   
   if (!is.logical(RefSeq)){
-    stop("\n  The value provided for the argument \'RefSeq\' is not logical.")
+    stop("\nThe value provided for the argument \'RefSeq\' is not logical.")
   }else if (!is.logical(ProseqIT_RefSeq)){
-    stop("\n  The value provided for the argument \'ProseqIT_RefSeq\' is not logical.")
+    stop("\nThe value provided for the argument \'ProseqIT_RefSeq\' is not logical.")
   }
 }
 
@@ -1379,7 +1379,7 @@ check_integer <- function(analyzes){
   # Returns TRUE if the values are logical, or FALSE otherwise
   
   if (analyzes != 1 & analyzes != 2 & analyzes != 3 & analyzes != 4){
-    stop("\n  The value provided for the argument \'analyzes\' is not an integer between 1 and 4.")
+    stop("\nThe value provided for the argument \'analyzes\' is not an integer between 1 and 4.")
   }
 }
 
@@ -1396,13 +1396,13 @@ check_ProseqIT <- function(ProseqIT_rx){
   files_directory <- list.files()
   
   if (!grepl(".xls$", ProseqIT_rx)){
-    stop("\n  The ProSeq-IT results file provided is not an Excel file (.xls and not .xlsx).")
+    stop("\nThe ProSeq-IT results file provided is not an Excel file (.xls and not .xlsx).")
   }else if (length(which(files_directory == ProseqIT_rx)) == 0){
-    stop("\n  The ProSeq-IT results file provided could not be found in your current directory.")
+    stop("\nThe ProSeq-IT results file provided could not be found in your current directory.")
   }else{
     tmp <- read.table(ProseqIT_rx, header = T, sep = "\t", row.names = NULL, fill = TRUE)
     if (length(grep("ID", tmp[1])) == 0){
-      stop("\n  The column \'ID\' is at least missing from your file.")
+      stop("\nThe column \'ID\' is at least missing from your file.")
     }
   }
 }
@@ -1420,9 +1420,9 @@ check_FASTA <- function(FASTA_file){
   files_directory <- list.files()
   
   if (!grepl(".fasta$", FASTA_file)){
-    stop("\n  The FASTA file provided is not a FASTA file (.fasta).")
+    stop("\nThe FASTA file provided is not a FASTA file (.fasta).")
   }else if (length(which(files_directory == FASTA_file)) == 0){
-    stop("\n  The FASTA file provided could not be found in your current directory.")
+    stop("\nThe FASTA file provided could not be found in your current directory.")
   }
 }
 

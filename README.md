@@ -35,7 +35,8 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
 # Before running the algorithm
 
 **1. Rename your sequences** <br>
-Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
+- Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
+- Make sure that the reference sequence (e.g., either "KO3455" or "HXB2" for subtype B) is not in any of the sequences names, except the reference sequence
 
 **2. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
 - Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.

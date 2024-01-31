@@ -38,14 +38,16 @@ None
 }
 \references{
 QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}
+
 Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
+
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{
 Audrée Lemieux
 }
 \note{
-Troubleshooting:
+Troubleshooting:\cr
 # "Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory\cr
 # Error in file(file, ifelse(append, "a", "w")): cannot open the connection
 

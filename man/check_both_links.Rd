@@ -23,8 +23,7 @@ None
 }
 \references{
 QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}
-
-Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
+\cr Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
 }
 \author{
 Audrée Lemieux

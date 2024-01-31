@@ -5,24 +5,34 @@
 Assess the clonality of HIV proviruses
 }
 \description{
-This function assesses the clonality of HIV proviruses. For donor and for each unique sequence, it returns the number and names of its clones and the number and names of its "potential clones", if applicable. It outputs the results in the "Clonality" folder, in the "FINAL_OUTPUT" folder).
+This function assesses the clonality of HIV proviruses.
+
+For donor and for each unique sequence, it returns the number and names of its clones and the number and names of its \strong{potential clones}, if applicable.
+
+It outputs the results in the \strong{Clonality} folder, in the \strong{FINAL_OUTPUT} folder).
 }
 \usage{
 Clonality_Analysis(FASTA_file, donors, threshold = 5)
 }
 \arguments{
   \item{FASTA_file}{
-name of the FASTA file containing all the aligned sequences.
+name of the FASTA file containing all the aligned sequences
 }
   \item{donors}{
-vector string containing the names of the donors. Use c() if more than one donor.
+vector string containing the names of the donors. Use \preformatted{c()} if more than one donor
 }
   \item{threshold}{
-integer. The threshold of different nucleotides between two sequences to consider them as "potential clones". Default is 5
+integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}. Default is \preformatted{5}
 }
 }
 \details{
-To analyze the data, the function first splits the FASTA file into shorter FASTA files, splitted by donor (one file per donor). It then creates a matrix of sequence length and paired-comparisons are only done with sequences with the same length, or \eqn{\302\261} the threshold. It realigns these sequences with MAFFT. If the number of different nucleotides between two sequences is 0, and their sequence length are identical, the second sequence is classified as a "clone". Instead, it is \eqn{\302\261} the threshold, it is classified as a "potential clone". That can later be confirmed using Geneious (see \url{https://github.com/alemi055/IntegrityAlgorithm#to-confirm-clones-and-potential-clones-in-geneious}).
+To analyze the data, the function first splits the FASTA file into shorter FASTA files, splitted by donor (one file per donor).
+
+It then creates a matrix of sequence length and paired-comparisons are only done with sequences with the same length, or \eqn{\302\261} the threshold.
+
+It realigns these sequences with MAFFT. If the number of different nucleotides between two sequences is 0, and their sequence length are identical, the second sequence is classified as a \strong{clone}.
+
+Instead, it is \eqn{\302\261} the threshold, it is classified as a \strong{potential clone}. That can later be confirmed using Geneious (see \url{https://github.com/alemi055/IntegrityAlgorithm#to-confirm-clones-and-potential-clones-in-geneious}).
 }
 \value{
 None

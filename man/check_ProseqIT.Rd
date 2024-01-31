@@ -16,10 +16,10 @@ the name of the summary Excel (.xls) file downloaded from ProSeq-IT
 }
 }
 \details{
-This function is used at the beginning of the main function HIV_IntegrityAnalysis().
+This function is used at the beginning of the main function \preformatted{HIV_IntegrityAnalysis()}.
 }
 \value{
-TRUE if the ProSeq-IT's Excel file is usable, or FALSE otherwise.
+\preformatted{TRUE} if the ProSeq-IT's Excel file is usable, or \preformatted{FALSE} otherwise.
 }
 \references{
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}

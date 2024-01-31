@@ -5,7 +5,11 @@
 Identify defects in Env
 }
 \description{
-This function identifies HIV Env defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter). It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Env defects. Further details are added in the 'env_defects_comments' if there is a defect.
+This function identifies HIV Env defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter).
+
+It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Env defects.
+
+Further details are added in the \emph{env_defects_comments} if there is a defect.
 }
 \usage{
 env_small_delet(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
@@ -22,15 +26,20 @@ Data frame containing the analyzed results from Gene Cutter
 }
 }
 \details{
-Based on ProSeq-IT's values 'env_insertion', 'env_deletion', 'env_frameshift' (to see values, see "ProseqIT_criteria" tab of the Excel template). To be considered "intact", the Env ORF must have a start codon, no frameshift, and insertions/deletions representing <5\% of its length. For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+Based on ProSeq-IT's values \emph{env_insertion}, \emph{env_deletion}, \emph{env_frameshift} (to see values, see \strong{ProseqIT_criteria} tab of the Excel template).
+
+To be considered \strong{intact}, the Env ORF must have a start codon, no frameshift, and insertions/deletions representing <5\% of its length.
+
+For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory.
+
+This function is used in the main function \preformatted{ProseqIT_analyzes()}.
 }
 \value{
 A data frame summarizing the Pol defects.
 }
 \references{
 Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
-
-ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
+\cr ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{
 Audrée Lemieux

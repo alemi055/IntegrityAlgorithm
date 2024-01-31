@@ -5,7 +5,9 @@
 Identify Gag defects
 }
 \description{
-This function identifies HIV Gag defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter). It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Gag defects. Further details are added in the 'Gag_defects_comments' if there is a defect.
+This function identifies HIV Gag defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter).
+
+It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Gag defects. Further details are added in the \emph{Gag_defects_comments} if there is a defect.
 }
 \usage{
 gag_small_delet(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
@@ -22,15 +24,18 @@ Data frame containing the analyzed results from Gene Cutter
 }
 }
 \details{
-Based on ProSeq-IT's values 'U5_gag_pair_R2_deletion', '2base_before_gag_status', 'gag_insertion', 'gag_deletion', 'gag_frameshift' (to see values, see "ProseqIT_criteria" tab of the Excel template). To be considered "intact", the Gag ORF must have a start codon, no frameshift, and insertions/deletions representing <5\% of its length. For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+Based on ProSeq-IT's values \emph{U5_gag_pair_R2_deletion}, \emph{2base_before_gag_status}, \emph{gag_insertion}, \emph{gag_deletion}, \emph{gag_frameshift} (to see values, see \strong{ProseqIT_criteria} tab of the Excel template).
+
+To be considered \strong{intact}, the Gag ORF must have a start codon, no frameshift, and insertions/deletions representing <5\% of its length.
+
+For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function \preformatted{ProseqIT_analyzes().
 }
 \value{
 A data frame summarizing the Gag defects.
 }
 \references{
 Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
-
-ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
+\cr ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{
 Audrée Lemieux

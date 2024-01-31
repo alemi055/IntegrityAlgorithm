@@ -12,14 +12,14 @@ check_FASTA(FASTA_file)
 }
 \arguments{
   \item{ProseqIT_rx}{
-name of the FASTA file containing all the aligned sequences.
+name of the FASTA file containing all the aligned sequences
 }
 }
 \details{
-This function is used at the beginning of the main function HIV_IntegrityAnalysis().
+This function is used at the beginning of the main function \preformatted{HIV_IntegrityAnalysis()}.
 }
 \value{
-TRUE if the FASTA file is usable, or FALSE otherwise.
+\preformatted{TRUE} if the FASTA file is usable, or \preformatted{FALSE} otherwise.
 }
 % \references{
 % ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}

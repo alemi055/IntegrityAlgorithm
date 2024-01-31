@@ -5,7 +5,11 @@
 Analyze the results from Gene Cutter
 }
 \description{
-This function analyzes the results from Gene Cutter. For each ORF, it opens the amino acid result (aa), identifies the presence of a start codon (presence of start codon: will be written in the temporary file), and then identifies the sequences with stop codons (presence of stop codon: will be written in the temporary file). This function creates a temporary file named "Analyzed_GeneCutter.csv" in the "tmp" folder.
+This function analyzes the results from Gene Cutter.
+
+For each ORF, it opens the amino acid result (aa), identifies the presence of a start codon (presence of start codon: will be written in the temporary file), and then identifies the sequences with stop codons (presence of stop codon: will be written in the temporary file).
+
+This function creates a temporary file named \preformatted{Analyzed_GeneCutter.csv} in the \strong{tmp} folder.
 }
 \usage{
 GeneCutter_analyzes(filename, RefSeq = TRUE)
@@ -15,11 +19,13 @@ GeneCutter_analyzes(filename, RefSeq = TRUE)
 the name of the Excel template file
 }
   \item{RefSeq}{
-logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results. Default is TRUE
+logical. If \preformatted{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \preformatted{TRUE}
 }
 }
 \details{
-To analyze the data, the function assesses the URL link of the results (to access the start and stop codons). This function is used in the main function HIV_IntegrityAnalysis().
+To analyze the data, the function assesses the URL link of the results (to access the start and stop codons).
+
+This function is used in the main function \preformatted{HIV_IntegrityAnalysis()}.
 }
 \value{
 None

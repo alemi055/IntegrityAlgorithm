@@ -5,7 +5,7 @@
 Verify if the provided Gene Cutter's results URL link is usable
 }
 \description{
-This function verifies if the Gene Cutter's results URL link is a \'https://\' link, is indeed from LANL's HIV Sequence Database, is indeed results from Gene Cutter (and not another LANL's tool, for instance), and if the link has not expired.
+This function verifies if the Gene Cutter's results URL link is a \preformatted{https://} link, is indeed from LANL's HIV Sequence Database, is indeed results from Gene Cutter (and not another LANL's tool, for instance), and if the link has not expired.
 }
 \usage{
 check_link_GC(hyperlink)
@@ -16,10 +16,10 @@ URL link of LANL's HIV Sequence Database's Gene Cutter's results
 }
 }
 \details{
-This function is used at in the function check_both_links().
+This function is used at in the function \preformatted{check_both_links()}.
 }
 \value{
-TRUE if the Gene Cutter's results URL link provided is usable, or FALSE otherwise.
+\preformatted{TRUE} if the Gene Cutter's results URL link provided is usable, or \preformatted{FALSE} otherwise.
 }
 \references{
 Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}

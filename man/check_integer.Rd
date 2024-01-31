@@ -2,24 +2,24 @@
 \alias{check_integer}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Verify if the \'analyzed\' and \'threshold\' values provided are integers
+Verify if the \preformatted{analyzes} and \preformatted{threshold} values provided are integers
 }
 \description{
-This function verifies if the \'analyzed\' and \'threshold\' values provided are integers
+This function verifies if the \preformatted{analyzes} and \preformatted{threshold} values provided are integers
 }
 \usage{
 check_integer(analyzes, threshold)
 }
 \arguments{
   \item{analyzes}{
-integer. The functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
+integer. The functions to run. \preformatted{1}: QCTool only; \preformatted{2}: GeneCutter and ProSeq-IT; \preformatted{3}: IntegrateInfo only; \preformatted{4}: All
 }
   \item{threshold}{
-integer. The threshold of different nucleotides between two sequences to consider them as "potential clones".
+integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}.
 }
 }
 \details{
-This function is used at the beginning of the main functions HIV_IntegrityAnalysis() and Clonality_Analysis().
+This function is used at the beginning of the main functions \preformatted{HIV_IntegrityAnalysis()} and \preformatted{Clonality_Analysis()}.
 }
 \value{
 None

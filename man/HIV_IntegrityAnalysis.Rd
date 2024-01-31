@@ -7,9 +7,9 @@ Infer the intactness of HIV proviruses
 \description{
 This function integrates the analyzes from all tools (Geneious, QCTool, Gene Cutter, and ProSeq-IT) to infer the intactness of the provirus (\strong{intact} or \strong{defective}).
 
-For each sequence, if the sequence is defective, it will detail all the defects in the \preformatted{intactness_detailedsummary.csv} file (in the \strong{tmp} folder), or only the main defect (defects are hierarchized) in the \preformatted{intactness_summary.csv} (in the \strong{FINAL_OUTPUT} folder).
+For each sequence, if the sequence is defective, it will detail all the defects in the \file{intactness_detailedsummary.csv} file (in the \strong{tmp} folder), or only the main defect (defects are hierarchized) in the \file{intactness_summary.csv} (in the \strong{FINAL_OUTPUT} folder).
 
-It also outputs, in the \strong{tmp} folder, one .csv file per tool (QCTool: \preformatted{Analyzed_QCTool.csv}; Gene Cutter: \preformatted{Analyzed_GeneCutter.csv}; ProSeq-IT: \preformatted{Analyzed_ProseqIT.csv}).
+It also outputs, in the \strong{tmp} folder, one .csv file per tool (QCTool: \file{Analyzed_QCTool.csv}; Gene Cutter: \file{Analyzed_GeneCutter.csv}; ProSeq-IT: \file{Analyzed_ProseqIT.csv}).
 }
 \usage{
 HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = TRUE, RefSeq = TRUE, analyzes = 4)
@@ -25,13 +25,13 @@ the name of the summary text (.txt) file downloaded from QCTool's output
 the name of the summary Excel (.xls) file downloaded from ProSeq-IT
 }
   \item{ProseqIT_RefSeq}{
-logical. If \preformatted{TRUE}, the reference sequence is included in ProSeq-IT's results. Default is \preformatted{TRUE}
+logical. If \samp{TRUE}, the reference sequence is included in ProSeq-IT's results. Default is \samp{TRUE}
 }
   \item{RefSeq}{
-logical. If \preformatted{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \preformatted{TRUE}
+logical. If \samp{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \samp{TRUE}
 }
   \item{analyzes}{
-integer. The functions to run. \preformatted{1}: QCTool only; \preformatted{2}: GeneCutter and ProSeq-IT; \preformatted{3}: IntegrateInfo only; \preformatted{4}: All. Default is \preformatted{4}
+integer. The functions to run. \samp{1}: QCTool only; \samp{2}: GeneCutter and ProSeq-IT; \samp{3}: IntegrateInfo only; \samp{4}: All. Default is \samp{4}
 }
 }
 \details{
@@ -39,7 +39,7 @@ To analyze the data, the function assesses the results from all tools: manual as
 
 Each provirus undergoes analysis to identify the presence of, in order, (\strong{i}) inversions, (\strong{ii}) hypermutations, (\strong{iii}) large internal deletions, (\strong{iv}) stop codons, (\strong{v}) \eqn{\Psi} defects, and (\strong{vi}) small internal deletions in gag, pol, vif, vpr, tat, rev, vpu, nef, env, and RRE.
 
-The defects are either hierarchized (i.e., only one defect per sequence, see \preformatted{intactness_summary.csv} file) or not (exhaustive list of all defects, see \preformatted{intactness_detailedsummary.csv}).
+The defects are either hierarchized (i.e., only one defect per sequence, see \file{intactness_summary.csv} file) or not (exhaustive list of all defects, see \file{intactness_detailedsummary.csv}).
 }
 \value{
 None
@@ -53,7 +53,10 @@ QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}
 Audrée Lemieux
 }
 \note{
-Troubleshooting:\cr
+\strong{Troubleshooting}
+
+~~~~~~~~~~~~~~~~~~~~
+
 \code{Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory}\cr
 \code{Error in file(file, ifelse(append, "a", "w")): cannot open the connection}
 
@@ -67,7 +70,7 @@ This type of error occurs when the number of sequences between all files and too
 
 To fix this error, check the temporary .csv files (in the \strong{tmp} folder) and verify at which tool the number of sequences varies. It could be in the downloaded files (QCTool's summary .txt file and/or ProSeq-IT's .xls file) as well.
 
-It can sometimes happen when the reference sequence is present (or absent) in one of the tools, and the \preformatted{RefSeq} and \preformatted{ProseqIT_RefSeq} options have not been modified.
+It can sometimes happen when the reference sequence is present (or absent) in one of the tools, and the \samp{RefSeq} and \samp{ProseqIT_RefSeq} options have not been modified.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

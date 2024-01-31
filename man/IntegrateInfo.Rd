@@ -29,14 +29,14 @@ Audrée Lemieux
 }
 \note{
 Troubleshooting:
-"Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory
-Error in file(file, ifelse(append, "a", "w")): cannot open the connection
+# "Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory\cr
+# Error in file(file, ifelse(append, "a", "w")): cannot open the connection
 
 This error occurs when the user does not have administrative rights. To fix this error, manually create the folders: "tmp" and "FINAL_OUTPUT".
 
 ~~~
 
-Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 11, 10
+# Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 11, 10
 
 This type of error occurs when the number of sequences between all files and tools (Excel template, QCTool, Gene Cutter, and ProSeq-IT) is not the same and/or in the same order. To fix this error, check the temporary .csv files (in the "tmp" folder) and verify at which tool the number of sequences varies. It can sometimes happen when the reference sequence is present (or absent) in one of the tools, and the \'RefSeq\' and \'ProseqIT_RefSeq\' options have not been modified.
 }

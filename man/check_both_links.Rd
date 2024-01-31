@@ -16,7 +16,7 @@ the name of the Excel template file
 }
 }
 \details{
-This function is used at the beginning of the main function \preformatted{HIV_IntegrityAnalysis()}.
+This function is used at the beginning of the main function \samp{HIV_IntegrityAnalysis()}.
 }
 \value{
 None

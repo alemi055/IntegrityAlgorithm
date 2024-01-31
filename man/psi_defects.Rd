@@ -5,7 +5,11 @@
 Identify \eqn{\Psi} defects
 }
 \description{
-This function identifies \eqn{\Psi} defects in sequences based on ProSeq-IT's results. It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of \eqn{\Psi} defects. Further details are added in the 'Psi_defects_comments' if there is a defect.
+This function identifies \eqn{\Psi} defects in sequences based on ProSeq-IT's results.
+
+It returns, for each sequence, a data frame summarizing the presence or absence (\samp{0} or \samp{1}) of \eqn{\Psi} defects.
+
+Further details are added in the \emph{Psi_defects_comments} if there is a defect.
 }
 \usage{
 psi_defects(ProseqIT_rx, ProseqIT_criteria)
@@ -19,7 +23,13 @@ Data frame containing, for each ProSeq-IT annotation, the criteria used to infer
 }
 }
 \details{
-Based on ProSeq-IT's values 'msd_status' (intact: 'correct') and 'package_deletion' (intact: <8 nt deleted). An ORF that contains deletions representing <5\% of its length is still considered intact. For this function to work, ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+Based on ProSeq-IT's values \emph{msd_status} and \emph{package_deletion} (to see values, see the \strong{ProseqIT_criteria} tab of the Excel template).
+
+To be considered \strong{intact}, the \eqn{\Psi} must have no deletions representing <5\% of its length.
+
+For this function to work, ProSeq-IT's output Excel file must be in the user's current directory.
+
+This function is used in the main function \samp{ProseqIT_analyzes()}.
 }
 \value{
 A data frame summarizing the \eqn{\Psi} defects.

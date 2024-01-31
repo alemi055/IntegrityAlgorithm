@@ -16,10 +16,10 @@ the name of the summary text (.txt) file downloaded from QCTool's output
 }
 }
 \details{
-This function is used at the beginning of the main function \preformatted{HIV_IntegrityAnalysis()}.
+This function is used at the beginning of the main function \samp{HIV_IntegrityAnalysis()}.
 }
 \value{
-\preformatted{TRUE} if the QCTool's summary text file is usable, or \preformatted{FALSE} otherwise.
+\samp{TRUE} if the QCTool's summary text file is usable, or \samp{FALSE} otherwise.
 }
 \references{
 QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}

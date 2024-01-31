@@ -16,10 +16,10 @@ name of the FASTA file containing all the aligned sequences
 }
 }
 \details{
-This function is used at the beginning of the main function \preformatted{HIV_IntegrityAnalysis()}.
+This function is used at the beginning of the main function \samp{HIV_IntegrityAnalysis()}.
 }
 \value{
-\preformatted{TRUE} if the FASTA file is usable, or \preformatted{FALSE} otherwise.
+\samp{TRUE} if the FASTA file is usable, or \samp{FALSE} otherwise.
 }
 % \references{
 % ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}

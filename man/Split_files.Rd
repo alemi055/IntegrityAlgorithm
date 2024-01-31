@@ -15,11 +15,11 @@ Split_files(FASTA_file, donors)
 name of the FASTA file containing all the aligned sequences.
 }
   \item{donors}{
-vector string containing the names of the donors. Use c() if more than one donor.
+vector string containing the names of the donors. Use \samp{c()} if more than one donor.
 }
 }
 \details{
-This function is used in the main function Clonality_Analysis().
+This function is used in the main function \samp{Clonality_Analysis()}.
 }
 \value{
 None

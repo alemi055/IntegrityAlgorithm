@@ -19,10 +19,10 @@ Clonality_Analysis(FASTA_file, donors, threshold = 5)
 name of the FASTA file containing all the aligned sequences
 }
   \item{donors}{
-vector string containing the names of the donors. Use \preformatted{c()} if more than one donor
+vector string containing the names of the donors. Use \samp{c()} if more than one donor
 }
   \item{threshold}{
-integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}. Default is \preformatted{5}
+integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}. Default is \samp{5}
 }
 }
 \details{

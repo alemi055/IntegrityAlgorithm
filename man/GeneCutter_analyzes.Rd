@@ -9,7 +9,7 @@ This function analyzes the results from Gene Cutter.
 
 For each ORF, it opens the amino acid result (aa), identifies the presence of a start codon (presence of start codon: will be written in the temporary file), and then identifies the sequences with stop codons (presence of stop codon: will be written in the temporary file).
 
-This function creates a temporary file named \preformatted{Analyzed_GeneCutter.csv} in the \strong{tmp} folder.
+This function creates a temporary file named \samp{Analyzed_GeneCutter.csv} in the \strong{tmp} folder.
 }
 \usage{
 GeneCutter_analyzes(filename, RefSeq = TRUE)
@@ -19,13 +19,13 @@ GeneCutter_analyzes(filename, RefSeq = TRUE)
 the name of the Excel template file
 }
   \item{RefSeq}{
-logical. If \preformatted{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \preformatted{TRUE}
+logical. If \samp{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \samp{TRUE}
 }
 }
 \details{
 To analyze the data, the function assesses the URL link of the results (to access the start and stop codons).
 
-This function is used in the main function \preformatted{HIV_IntegrityAnalysis()}.
+This function is used in the main function \samp{HIV_IntegrityAnalysis()}.
 }
 \value{
 None
@@ -37,11 +37,14 @@ Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/
 Audrée Lemieux
 }
 \note{
-Troubleshooting:\cr
-# "Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory\cr
-# Error in file(file, ifelse(append, "a", "w")): cannot open the connection
+\strong{Troubleshooting}
 
-This error occurs when the user does not have administrative rights. To fix this error, manually create the folders: "tmp" and "FINAL_OUTPUT".
+~~~~~~~~~~~~~~~~~~~~
+
+\code{Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory}\cr
+\code{Error in file(file, ifelse(append, "a", "w")): cannot open the connection}
+
+This error occurs when the user does not have administrative rights. To fix this error, manually create the folders: \strong{tmp} and \strong{FINAL_OUTPUT}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

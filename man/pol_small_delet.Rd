@@ -5,7 +5,11 @@
 Identify Pol defects
 }
 \description{
-This function identifies HIV Pol defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter). It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Pol defects. Further details are added in the 'Pol_defects_comments' if there is a defect.
+This function identifies HIV Pol defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter).
+
+It returns, for each sequence, a data frame summarizing the presence or absence (\samp{0} or \samp{1}) of Pol defects.
+
+Further details are added in the \emph{Pol_defects_comments} if there is a defect.
 }
 \usage{
 pol_small_delet(ProseqIT_rx, ProseqIT_criteria, ProseqIT_summary, Analyzed_GeneCutter)
@@ -25,15 +29,20 @@ Data frame containing the analyzed results from Gene Cutter
 }
 }
 \details{
-Based on ProSeq-IT's values 'pol_insertion', 'pol_deletion', 'pol_frameshift' (to see values, see "ProseqIT_criteria" tab of the Excel template). To be considered "intact", the Pol ORF must have no frameshift and insertions/deletions representing <5\% of its length. For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+Based on ProSeq-IT's values \emph{pol_insertion}, \emph{pol_deletion}, \emph{pol_frameshift} (to see values, see the \strong{ProseqIT_criteria} tab of the Excel template).
+
+To be considered \strong{intact}, the Pol ORF must have no frameshift and insertions/deletions representing <5\% of its length.
+
+For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory.
+
+This function is used in the main function \samp{ProseqIT_analyzes()}.
 }
 \value{
 A data frame summarizing the Pol defects.
 }
 \references{
 Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
-
-ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
+\cr ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{
 Audrée Lemieux

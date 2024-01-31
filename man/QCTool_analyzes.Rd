@@ -5,7 +5,9 @@
 Analyze the results from QCTool
 }
 \description{
-This function analyzes the results from QCTool. It first identifies the stop codons, then hypermutations (presence of hypermutation: "Possible" or absence: "Cannot determine"). This function creates a temporary file named "Analyzed_QCTool.csv" in the "tmp" folder.
+This function analyzes the results from QCTool.
+
+It first identifies the stop codons, then hypermutations (presence of hypermutation: \samp{Possible} or absence: \samp{Cannot determine}). This function creates a temporary file named \samp{Analyzed_QCTool.csv} in the \strong{tmp} folder.
 }
 \usage{
 QCTool_analyzes(filename, summary, RefSeq = TRUE)
@@ -18,11 +20,13 @@ the name of the Excel template file
 the name of the summary text (.txt) file downloaded from QCTool's output
 }
   \item{RefSeq}{
-logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results. Default is TRUE
+logical. If \samp{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \samp{TRUE}
 }
 }
 \details{
-To analyze the data, the function assesses the summary text (.txt) file downloaded from QCTool's output, as well as the URL link of the results (to access the stop codons). This function is used in the main function HIV_IntegrityAnalysis().
+To analyze the data, the function assesses the summary text (.txt) file downloaded from QCTool's output, as well as the URL link of the results (to access the stop codons).
+
+This function is used in the main function \samp{HIV_IntegrityAnalysis()}.
 }
 \value{
 None
@@ -34,11 +38,14 @@ QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}
 Audrée Lemieux
 }
 \note{
-Troubleshooting:\cr
-# "Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory\cr
-# Error in file(file, ifelse(append, "a", "w")): cannot open the connection
+\strong{Troubleshooting}
 
-This error occurs when the user does not have administrative rights. To fix this error, manually create the folders: "tmp" and "FINAL_OUTPUT".
+~~~~~~~~~~~~~~~~~~~~
+
+\code{Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory}\cr
+\code{Error in file(file, ifelse(append, "a", "w")): cannot open the connection}
+
+This error occurs when the user does not have administrative rights. To fix this error, manually create the folders: \strong{tmp} and \strong{FINAL_OUTPUT}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

@@ -16,7 +16,7 @@ matrix of sequences aligned with MAFFT
 }
 }
 \details{
-Is used to identify the clones and potential clones of a sequence. This function is used in the main function Clonality_Analysis().
+Is used to identify the clones and potential clones of a sequence. This function is used in the main function \samp{Clonality_Analysis()}.
 }
 \value{
 An integer representing the number of different nucleotides between to sequences

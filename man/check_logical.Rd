@@ -2,24 +2,24 @@
 \alias{check_logical}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Verify if the \preformatted{RefSeq} and \preformatted{ProseqIT_RefSeq} values provided are logical
+Verify if the \samp{RefSeq} and \samp{ProseqIT_RefSeq} values provided are logical
 }
 \description{
-This function verifies if \preformatted{RefSeq} and \preformatted{ProseqIT_RefSeq} values provided are logical (either \preformatted{TRUE} or \preformatted{FALSE})
+This function verifies if \samp{RefSeq} and \samp{ProseqIT_RefSeq} values provided are logical (either \samp{TRUE} or \samp{FALSE})
 }
 \usage{
 check_logical(RefSeq, ProseqIT_RefSeq)
 }
 \arguments{
   \item{RefSeq}{
-logical. If \preformatted{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results
+logical. If \samp{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results
 }
   \item{ProseqIT_RefSeq}{
-logical. If \preformatted{TRUE}, the reference sequence is included in ProSeq-IT's results
+logical. If \samp{TRUE}, the reference sequence is included in ProSeq-IT's results
 }
 }
 \details{
-This function is used at the beginning of the main function \preformatted{HIV_IntegrityAnalysis()}.
+This function is used at the beginning of the main function \samp{HIV_IntegrityAnalysis()}.
 }
 \value{
 None

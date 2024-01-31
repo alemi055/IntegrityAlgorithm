@@ -5,7 +5,11 @@
 Identify defects in Vif, Vpr, Tat, Rev, Vpu, and Nef
 }
 \description{
-This function identifies HIV Vif, Vpr, Tat, Rev, Vpu, and Nef defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter). It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Vif, Vpr, Tat, Rev, Vpu, and Nef defects. Further details are added in the '[protein_name]_defects_comments' if there is a defect.
+This function identifies HIV Vif, Vpr, Tat, Rev, Vpu, and Nef defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter).
+
+It returns, for each sequence, a data frame summarizing the presence or absence (\samp{0} or \samp{1}) of Vif, Vpr, Tat, Rev, Vpu, and Nef defects.
+
+Further details are added in the \emph{[protein_name]_defects_comments} if there is a defect.
 }
 \usage{
 vif_vpr_tat_rev_vpu_nef_small_delet(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
@@ -22,14 +26,20 @@ Data frame containing the analyzed results from Gene Cutter
 }
 }
 \details{
-Based on ProSeq-IT's values '[protein_name]_insertion', '[protein_name]_deletion', '[protein_name]_frameshift' (to see values, see "ProseqIT_criteria" tab of the Excel template). To be considered "intact", the ORFs must have a start codon, no frameshift, and insertions/deletions representing <5\% of their length. For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+Based on ProSeq-IT's values \emph{[protein_name]_insertion}, \emph{[protein_name]_deletion}, \emph{[protein_name]_frameshift} (to see values, see the \strong{ProseqIT_criteria} tab of the Excel template).
+
+To be considered \strong{intact}, the ORFs must have a start codon, no frameshift, and insertions/deletions representing <5\% of their length.
+
+For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory.
+
+This function is used in the main function \samp{ProseqIT_analyzes()}.
 }
 \value{
 A data frame summarizing the Pol defects.
 }
 \references{
-Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}\cr
-ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
+Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
+\cr ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{
 Audrée Lemieux

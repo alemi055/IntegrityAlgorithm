@@ -5,7 +5,9 @@
 Parse Gene Cutter's results
 }
 \description{
-This function reads and parses Gene Cutter's HIV ORF's amino acid results page. It reads the lines of the web page and returns a data frame with the sequence names, the base positions, and the corresponding amino acid sequences.
+This function reads and parses Gene Cutter's HIV ORF's amino acid results page.
+
+It reads the lines of the web page and returns a data frame with the sequence names, the base positions, and the corresponding amino acid sequences.
 }
 \usage{
 parse_GeneCutter(lines)
@@ -16,7 +18,7 @@ lines of Gene Cutter's HIV ORF's amino acid results page
 }
 }
 \details{
-For this function to work, the URL link to Gene Cutter's results should be input in the Excel Template file. This function is used in the main function GeneCutter_analyzes().
+For this function to work, the URL link to Gene Cutter's results should be input in the Excel Template file. This function is used in the main function \samp{GeneCutter_analyzes()}.
 }
 \value{
 A data frame containing, for a specific HIV ORF, the sequence names, the base positions, and the corresponding amino acid sequences.

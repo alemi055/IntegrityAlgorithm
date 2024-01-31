@@ -5,7 +5,7 @@
 Infer the intactness of HIV proviruses
 }
 \description{
-This function integrates the analyzes from all tools (Geneious, QCTool, Gene Cutter, and ProSeq-IT) to infer the intactness of the provirus (\strong{intact} or \strong{defective}).
+This function integrates the analyzes from all tools (\strong{Geneious}, \strong{QCTool}, \strong{Gene Cutter}, and \strong{Proseq-IT}) to infer the intactness of the provirus (\strong{intact} or \strong{defective}).
 
 For each sequence, if the sequence is defective, it will detail all the defects in the \file{intactness_detailedsummary.csv} file (in the \strong{tmp} folder), or only the main defect (defects are hierarchized) in the \file{intactness_summary.csv} (in the \strong{FINAL_OUTPUT} folder).
 

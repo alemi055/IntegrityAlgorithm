@@ -84,6 +84,7 @@ install_github("alemi055/IntegrityAlgorithm")
 ### HIV_IntegrityAnalysis()
 
 To analyze the intactness of HIV proviruses, run the function `HIV_IntegrityAnalysis()` <br>
+![Figure 1. IntegrityAnalysis](/Images/240131_IntegrityImage.jpg)
 1. The algorithm will first analyse the results from QCTool to identify ORFs containing stop codons and hypermutated sequences.
 2. It will then analyse the results from Gene Cutter to obtain the start and stop codons, if applicable, of and within each ORF.
 3. Next, it will analyse the results from ProSeq-IT for large and small internal deletions.

@@ -34,9 +34,9 @@ QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}
 Audrée Lemieux
 }
 \note{
-Troubleshooting:
-"Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory\cr
-Error in file(file, ifelse(append, "a", "w")): cannot open the connection
+Troubleshooting:\cr
+# "Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory\cr
+# Error in file(file, ifelse(append, "a", "w")): cannot open the connection
 
 This error occurs when the user does not have administrative rights. To fix this error, manually create the folders: "tmp" and "FINAL_OUTPUT".
 }

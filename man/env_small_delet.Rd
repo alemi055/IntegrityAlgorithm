@@ -28,7 +28,8 @@ Based on ProSeq-IT's values 'env_insertion', 'env_deletion', 'env_frameshift' (t
 A data frame summarizing the Pol defects.
 }
 \references{
-Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}\cr
+Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
+
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{

@@ -28,7 +28,8 @@ Based on ProSeq-IT's values 'U5_gag_pair_R2_deletion', '2base_before_gag_status'
 A data frame summarizing the Gag defects.
 }
 \references{
-Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}\cr
+Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
+
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{

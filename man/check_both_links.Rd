@@ -22,7 +22,8 @@ This function is used at the beginning of the main function HIV_IntegrityAnalysi
 None
 }
 \references{
-QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}\cr
+QCTool website: \url{https://www.hiv.lanl.gov/content/sequence/QC/index.html}
+
 Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
 }
 \author{

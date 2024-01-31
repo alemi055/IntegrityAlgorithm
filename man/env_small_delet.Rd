@@ -1,14 +1,14 @@
-\name{psi_defects}
-\alias{psi_defects}
+\name{env_small_delet}
+\alias{env_small_delet}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Identify \eqn{\Psi} defects
+Identify defects in Env
 }
 \description{
-This function identifies \eqn{\Psi} defects in sequences based on ProSeq-IT's results. It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of \eqn{\Psi} defects. Further details are added in the 'Psi_defects_comments' if there is a defect.
+This function identifies HIV Env defects in sequences based on ProSeq-IT's results, except for the stop codons (Gene Cutter). It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of Env defects. Further details are added in the 'env_defects_comments' if there is a defect.
 }
 \usage{
-psi_defects(ProseqIT_rx, ProseqIT_criteria)
+env_small_delet(ProseqIT_rx, ProseqIT_criteria, Analyzed_GeneCutter)
 }
 \arguments{
   \item{ProseqIT_rx}{
@@ -17,14 +17,18 @@ Data frame containing the results from ProSeq-IT (the Excel downloaded file)
   \item{ProseqIT_criteria}{
 Data frame containing, for each ProSeq-IT annotation, the criteria used to infer proviral intactness
 }
+  \item{Analyzed_GeneCutter}{
+Data frame containing the analyzed results from Gene Cutter
+}
 }
 \details{
-Based on ProSeq-IT's values 'msd_status' (intact: 'correct') and 'package_deletion' (intact: <8 nt deleted). An ORF that contains deletions representing <5\% of its length is still considered intact. For this function to work, ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+Based on ProSeq-IT's values 'env_insertion', 'env_deletion', 'env_frameshift' (to see values, see "ProseqIT_criteria" tab of the Excel template). To be considered "intact", the Env ORF must have a start codon, no frameshift, and insertions/deletions representing <5\% of its length. For this function to work, Gene Cutter's results must have been previously analyzed and ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
 }
 \value{
-A data frame summarizing the \eqn{\Psi} defects.
+A data frame summarizing the Pol defects.
 }
 \references{
+Gene Cutter website: \url{https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html}
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}
 }
 \author{

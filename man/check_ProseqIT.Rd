@@ -1,28 +1,25 @@
-\name{psi_defects}
-\alias{psi_defects}
+\name{check_ProseqIT}
+\alias{check_ProseqIT}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Identify \eqn{\Psi} defects
+Verify if the ProSeq-IT's Excel file provided is usable
 }
 \description{
-This function identifies \eqn{\Psi} defects in sequences based on ProSeq-IT's results. It returns, for each sequence, a data frame summarizing the presence or absence (0 or 1) of \eqn{\Psi} defects. Further details are added in the 'Psi_defects_comments' if there is a defect.
+This function verifies if the ProSeq-IT's Excel file provided is indeed an Excel file, if it can be found in your current directory, and if it contains the appropriate header.
 }
 \usage{
-psi_defects(ProseqIT_rx, ProseqIT_criteria)
+check_ProseqIT(ProseqIT_rx)
 }
 \arguments{
   \item{ProseqIT_rx}{
-Data frame containing the results from ProSeq-IT (the Excel downloaded file)
-}
-  \item{ProseqIT_criteria}{
-Data frame containing, for each ProSeq-IT annotation, the criteria used to infer proviral intactness
+the name of the summary Excel (.xls) file downloaded from ProSeq-IT
 }
 }
 \details{
-Based on ProSeq-IT's values 'msd_status' (intact: 'correct') and 'package_deletion' (intact: <8 nt deleted). An ORF that contains deletions representing <5\% of its length is still considered intact. For this function to work, ProSeq-IT's output Excel file must be in the user's current directory. This function is used in the main function ProseqIT_analyzes().
+This function is used at the beginning of the main function HIV_IntegrityAnalysis().
 }
 \value{
-A data frame summarizing the \eqn{\Psi} defects.
+TRUE if the ProSeq-IT's Excel file is usable, or FALSE otherwise.
 }
 \references{
 ProSeq-IT website: \url{https://psd.cancer.gov/tools/pvs_annot.php}

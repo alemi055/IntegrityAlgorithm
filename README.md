@@ -34,35 +34,52 @@ Each provirus undergoes analysis to identify the presence of (i) inversions, (ii
 
 # Before running the algorithm
 
-**1. Rename your sequences** <br>
-- Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
-- Make sure that the reference sequence (e.g., either "KO3455" or "HXB2" for subtype B) is not in any of the sequences names, except the reference sequence
+To analyze the HIV proviral sequences, you should have a FASTA file containing sequences:
+- where inversions have been corrected (to do so, replace the inversions with their reverse-complements)
+- where primers have been removed
 
-**2. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
+**1. Align the inversions-free, primers-free, sequences with the reference sequence (HXB2) using MAFFT (E-INS-i method for more accuracy)** <br>
+
+**Online tool:** [https://mafft.cbrc.jp/alignment/server/](https://mafft.cbrc.jp/alignment/server/)
+- [x] Direction of nucleotide sequences: ``Adjust direction according to the first sequence``
+- [x] Output order: ``Same as input``
+- [x] Strategy: ``E-INS-i``
+
+**Command line:**
+```
+mafft --thread 8 --threadtb 5 --threadit 0 --inputorder --adjustdirection --kimura 1 --auto INPUT_FILE.fasta > OUTPUT_FILE.fasta
+```
+
+**2. Rename your sequences** <br>
+- Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
+- Make sure that the reference sequence (e.g., either "KO3455" or "HXB2" for subtype B) is not in any of the sequences names, except the reference sequence.
+
+**3. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
 - Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.
 - Download the results as a text file: ``Download Summary``
 
-**3. Submit your FASTA file to [HIV Database Gene Cutter](https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html)** <br>
+**4. Submit your FASTA file to [HIV Database Gene Cutter](https://www.hiv.lanl.gov/content/sequence/GENE_CUTTER/cutter.html)** <br>
 - [x] ``Input sequences are pre-aligned``.
 - Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.
 
-**4. Prepare your FASTA file for submission to ProSeq-IT** <br>
+**5. Prepare your FASTA file for submission to ProSeq-IT** <br>
 As per [ProSeq-IT's instructions](https://psd.cancer.gov/tools/tool_index.php), if the reference sequence is included in the FASTA file, it has to be renamed. <br>
 - Duplicate your FASTA file.
 - In this duplicated file, rename the reference sequence (usually HXB2) to **"Reference_sequence"**.
 
-**5. Submit your FASTA file (containing the renamed reference sequence) to [ProSeq-IT](https://psd.cancer.gov/tools/pvs_annot.php)** <br>
-- Select the Subtype ``B``.
+**6. Submit your FASTA file (containing the renamed reference sequence) to [ProSeq-IT](https://psd.cancer.gov/tools/pvs_annot.php)** <br>
+- [x] Subtype: ``B``
 - Make sure that the number of sequences in ProSeq-IT's output corresponds to the number of sequences in your FASTA file.
-- Download the results as an Excel file: ``Download Result``
+- Download the results as an Excel file: ``Download Result``.
 
-**6. Complete the [Excel template](https://github.com/alemi055/IntegrityAlgorithm/blob/main/Template_IntegrityAlgorithm.xlsx)** <br>
+**7. Complete the [Excel template](https://github.com/alemi055/IntegrityAlgorithm/blob/main/Template_IntegrityAlgorithm.xlsx)** <br>
 The Excel templates contains 3 tabs:
 - ProseqIT_criteria [locked]: used for the analysis of ProSeq-IT
 - Manual_assessment: contains the results of the manual assessment with Geneious (to identify inversions) <br>
-    - The user fills the names of the sequences in the "Name" column; and `Y` for inversions, or `N` otherwise, in the "Inversions" column.
+    - Fill the "Name column" with the names of the sequences.
+    - Fill the "Inversions columns" with `Y` for inversions, or `N` otherwise.
 - Hyperlinks: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results
-    - The user enters the URL links of the results from QCTool and Gene Cutter (that were sent to their email).
+    - Fill the "Hyperink" column with the URL links of the results from QCTool and Gene Cutter (that were sent to your email).
  
 ### Files in directory before running the algorithm
 - [x] The FASTA file containing the aligned sequences + reference sequence (HXB2)
@@ -152,8 +169,15 @@ If it is a clone, a message will appear: "All sequences are identical. Options w
 | `intactness_summary.csv` | Summary of **hierarchized** defects for all sequences |
 | `[donor]_ClonalityAnalysis.csv` | Can be found in the **Clonality** subfolder. List of clones and potential clones for each of the donor's sequences |
 
-# Citation
+# Datasets
+| Paper | GenBank accession numbers | PopSet |
+| --- | --- | --- |
+| Sannier et al., Cell Rep 2021 | MZ662560 - MZ662755 | [2083716276](https://www.ncbi.nlm.nih.gov/popset/2083716276)
+| Dufour et al., Nat Commun 2023 | ON816029 - ON816663 | [2306699925](https://www.ncbi.nlm.nih.gov/popset/2306699925) |
+| Dubé et al., Cell Host Microbe 2023 | OR105517 - OR105556 | [2569148931](https://www.ncbi.nlm.nih.gov/popset/2569148931) |
+| Dufour et al., Cell Rep 2023 | ON816664 - ON817104 | [2306704384](https://www.ncbi.nlm.nih.gov/popset/2306704384)|
 
+# Citation
 If you use the IntegrityAlgorithm, please cite this repository.
 
 # Contact information

@@ -172,10 +172,10 @@ If it is a clone, a message will appear: "All sequences are identical. Options w
 # Datasets
 | Paper | GenBank accession numbers | PopSet |
 | --- | --- | --- |
-| Sannier et al., Cell Rep 2021 | MZ662560 - MZ662755 | [2083716276](https://www.ncbi.nlm.nih.gov/popset/2083716276)
-| Dufour et al., Nat Commun 2023 | ON816029 - ON816663 | [2306699925](https://www.ncbi.nlm.nih.gov/popset/2306699925) |
-| Dubé et al., Cell Host Microbe 2023 | OR105517 - OR105556 | [2569148931](https://www.ncbi.nlm.nih.gov/popset/2569148931) |
-| Dufour et al., Cell Rep 2023 | ON816664 - ON817104 | [2306704384](https://www.ncbi.nlm.nih.gov/popset/2306704384)|
+| Sannier et al., Cell Rep 2021 | MZ662560 - MZ662755 (n = 196) | [2083716276](https://www.ncbi.nlm.nih.gov/popset/2083716276)
+| Dufour et al., Nat Commun 2023 | ON816029 - ON816663 (n = 635) | [2306699925](https://www.ncbi.nlm.nih.gov/popset/2306699925) |
+| Dubé et al., Cell Host Microbe 2023 | OR105517 - OR105556 (n = 40) | [2569148931](https://www.ncbi.nlm.nih.gov/popset/2569148931) |
+| Dufour et al., Cell Rep 2023 | ON816664 - ON817104 (n = 441) | [2306704384](https://www.ncbi.nlm.nih.gov/popset/2306704384)|
 
 # Citation
 If you use the IntegrityAlgorithm, please cite this repository.

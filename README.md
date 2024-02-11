@@ -44,6 +44,7 @@ To analyze the HIV proviral sequences, you should have a FASTA file containing s
 - [x] Direction of nucleotide sequences: ``Adjust direction according to the first sequence``
 - [x] Output order: ``Same as input``
 - [x] Strategy: ``E-INS-i``
+- [x] Scoring matrix for nucleotide sequences: ``1PAM/k=2``
 
 **Command line:**
 ```

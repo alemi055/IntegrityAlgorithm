@@ -47,7 +47,7 @@ To analyze the HIV proviral sequences, you should have a FASTA file containing s
 
 **Command line:**
 ```
-mafft --thread 8 --threadtb 5 --threadit 0 --inputorder --adjustdirection --kimura 1 --auto INPUT_FILE.fasta > OUTPUT_FILE.fasta
+mafft --thread 8 --threadtb 5 --threadit 0 --inputorder --adjustdirection --kimura 1 --maxiterate 2 --retree 1 --genafpair INPUT_FILE.fasta > OUTPUT_FILE.fasta
 ```
 
 **2. Rename your sequences** <br>

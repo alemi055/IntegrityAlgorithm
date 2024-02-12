@@ -103,7 +103,7 @@ install_github("alemi055/IntegrityAlgorithm")
 
 To analyze the intactness of HIV proviruses, run the function `HIV_IntegrityAnalysis()`
 
-![Figure 1. IntegrityAnalysis](/Images/240131_IntegrityImage.jpg)
+![Figure 1. IntegrityAnalysis](/Images/240212_IntegrityImage_GitHub.jpg)
 
 1. The algorithm will first analyse the results from QCTool to identify ORFs containing stop codons and hypermutated sequences.
 2. It will then analyse the results from Gene Cutter to obtain the start and stop codons, if applicable, of and within each ORF.
@@ -127,7 +127,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 
 To analyze the clonality of the HIV proviruses, run the function `Clonality_Analysis()`
 
-![Figure 2. ClonalityAnalysis](/Images/240212_ClonalityImage.jpg)
+![Figure 2. ClonalityAnalysis](/Images/240212_ClonalityImage_GitHub.jpg)
 
 1. Files in the FASTA file input will be splitted according to the list of donors supplied. Donors with single sequences will not be analyzed.
 2. The clonality will be assessed on each of the splitted files. A list of clones (0 different nt between two sequences) and potential clones, established by a threshold, will be output.

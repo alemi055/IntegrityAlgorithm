@@ -139,7 +139,7 @@ Clonality_Analysis(FASTA_file, donors, threshold)
 | --- | --- | --- |
 | `FASTA_file` | Required | FASTA file containing all sequences, including the reference sequence (HXB2) |
 | `donors` | Required | Str vector containing the list of donors. If more than one, use the `c()` function |
-| `threshold` | Optional; default is `5` | Threshold number of different nucleotides to consider two sequences as "potential clones" |
+| `threshold` | Optional; default is `1` | Threshold number of different nucleotides to consider two sequences as "potential clones" |
 
 ## To confirm clones and potential clones in Geneious
 1. Import the "donor1_forClonality.fasta" file into Geneious. In the imported alignment, select all sequences.

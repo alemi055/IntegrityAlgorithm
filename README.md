@@ -1,4 +1,4 @@
-# IntegrityAlgorithm
+# IntegrityAlgorithm: a R package to analyze Near Full-Length HIV Intactness and Clonality
 
 **The algorithm automatizes the Near Full-Length (NFL) pipeline developed by Dr. Caroline Dufour:**
 - Sannier, G., Dubé, M., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Combined single-cell transcriptional, translational, and genomic profiling reveals HIV-1 reservoir diversity](https://doi.org/10.1016/j.celrep.2021.109643). *Cell Rep* **36**, 109643 (2021).

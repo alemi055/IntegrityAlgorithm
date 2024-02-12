@@ -671,7 +671,7 @@ IntegrateInfo <- function(filename){
 
 
 # MAIN FUNCTION 6
-Clonality_Analysis <- function(FASTA_file, donors, threshold = 5){
+Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
   # (int) -> None
   #
   # Input:

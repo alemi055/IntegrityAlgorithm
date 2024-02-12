@@ -1,6 +1,6 @@
 # IntegrityAlgorithm
 
-**The algorithm automatizes the pipeline developed by Dr. Caroline Dufour:**
+**The algorithm automatizes the Near Full-Length (NFL) pipeline developed by Dr. Caroline Dufour:**
 - Sannier, G., Dubé, M., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Combined single-cell transcriptional, translational, and genomic profiling reveals HIV-1 reservoir diversity](https://doi.org/10.1016/j.celrep.2021.109643). *Cell Rep* **36**, 109643 (2021).
 - Dufour, C., ..., Fromentin, R., & Chomont, N. [Phenotypic characterization of single CD4+ T cells harboring genetically intact and inducible HIV genomes](https://doi.org/10.1038/s41467-023-36772-x). *Nat Commun* **14**, 1115 (2023).
 - Dubé, M., Tastet, O., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Spontaneous HIV expression during suppressive ART is associated with the magnitude and function of HIV-specific CD4+ and CD8+ T cells](https://doi.org/10.1016/j.chom.2023.08.006). *Cell Host Microbe* **13**, 1507-1522 (2023).

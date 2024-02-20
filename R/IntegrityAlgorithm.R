@@ -838,8 +838,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
         tmp_potentialclones <- potentialclones_list[[unique_seqs[j]]]
         if (length(tmp_potentialclones) > 1){
           npotentialclones <- length(tmp_potentialclones)
-        }
-        if (is.na(tmp_potentialclones)){
+        }else if (is.na(tmp_potentialclones)){
           npotentialclones <- 0
         }else if (length(tmp_potentialclones) > 0){
           npotentialclones <- length(tmp_potentialclones)

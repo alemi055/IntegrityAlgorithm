@@ -203,8 +203,6 @@ This indicates that either the number of sequences or their names (or both) are 
 
 Verify each file to identify which tool is causing the problem. <br>
 
-This can happen when sequence names end with a special character (e.g., "_"), as QC Tool removes them automatically (while the other tools do not).
-
 # Datasets
 | Paper | GenBank accession numbers | PopSet |
 | --- | --- | --- |

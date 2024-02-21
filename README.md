@@ -52,9 +52,8 @@ mafft --thread 8 --threadtb 5 --threadit 0 --inputorder --adjustdirection --kimu
 ```
 
 **2. Rename your sequences** <br>
-- Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
+- Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor (or any other software).
 - Make sure that the reference sequence (e.g., either "KO3455" or "HXB2" for subtype B) is not in any of the sequences names, except the reference sequence.
-- Make sure that sequence names do not end with special characters, such as "_".
 
 **3. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
 - Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.

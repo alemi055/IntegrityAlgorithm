@@ -6,7 +6,7 @@
 - Dubé, M., Tastet, O., Dufour, C., ..., Fromentin, R., Chomont, N., & Kaufmann, D.E. [Spontaneous HIV expression during suppressive ART is associated with the magnitude and function of HIV-specific CD4+ and CD8+ T cells](https://doi.org/10.1016/j.chom.2023.08.006). *Cell Host Microbe* **13**, 1507-1522 (2023).
 - Dufour, C., ..., & Chomont, N. [Near full-length HIV sequencing in multiple tissues collected postmortem reveals shared clonal expansions across distinct reservoirs during ART](https://doi.org/10.1016/j.celrep.2023.113053). *Cell Rep* **42**, 113053 (2023).
 
-### Defects
+## Defects
 
 Each provirus undergoes analysis to identify the presence of (i) inversions, (ii) hypermutations, (iii) large internal deletions, (iv) stop codons, (v) $\Psi$ defects, and (vi) small internal deletions in *gag*, *pol*, *vif*, *vpr*, *tat*, *rev*, *vpu*, *nef*, *env*, and RRE.
 
@@ -85,7 +85,7 @@ The Excel templates contains 3 tabs:
 **8. OPTIONAL: Fill out the R script titled ["IntactnessandClonality.R"](https://github.com/alemi055/IntegrityAlgorithm/blob/main/IntactnessandClonality.R)** <br>
 This R script contains both functions, `HIV_IntegrityAnalysis()` and `Clonality_Analysis()`. The user only has to replace the `TO_FILL` by its values.
  
-### Files in directory before running the algorithm
+## Files in directory before running the algorithm
 - [x] The FASTA file containing the aligned sequences + reference sequence (HXB2)
 - [x] The Excel template
 - [x] The text file containing QCTool's results
@@ -102,7 +102,7 @@ install_github("alemi055/IntegrityAlgorithm")
 
 # Usage
 
-### HIV_IntegrityAnalysis()
+## HIV_IntegrityAnalysis()
 
 To analyze the intactness of HIV proviruses, run the function `HIV_IntegrityAnalysis()`
 
@@ -126,7 +126,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 | `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
 | `analyzes` | optional argument; default is `4` | Specifies the analyzes to be done: <br> ``1`` QCTool only <br>``2`` Gene Cutter and ProSeq-IT only <br> ``3`` IntegrateInfo only <br> ``4`` All |
 
-### Clonality_Analysis()
+## Clonality_Analysis()
 
 To analyze the clonality of the HIV proviruses, run the function `Clonality_Analysis()`
 
@@ -175,7 +175,7 @@ If it is a clone, a message will appear: "All sequences are identical. Options w
 
 # Troubleshooting
 
-### Cannot open connection
+## Cannot open connection
 
 ```
 Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory
@@ -184,7 +184,7 @@ Error in file(file, ifelse(append, "a", "w")): cannot open the connection
 
 This error occurs when the user does not have administrative rights. To fix this error, manually create the folders `tmp` and `FINAL_OUTPUT` and try again.
 
-### Differing number of rows
+## Differing number of rows
 
 ```
 Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 11, 10
@@ -192,7 +192,7 @@ Error in data.frame(..., check.names = FALSE): arguments imply differing number 
 
 This type of error occurs when the reference sequence is included (or not) in ProSeq-IT's Excel file, and the argument `ProseqIT_RefSeq` has not been modified accordingly (`TRUE` or `FALSE`).
 
-### Sequence names or number of sequences are not the same in all files
+## Sequence names or number of sequences are not the same in all files
 
 ```
 Error in IntegrateInfo(template_filename) :                                                                      

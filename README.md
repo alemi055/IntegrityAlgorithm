@@ -54,6 +54,7 @@ mafft --thread 8 --threadtb 5 --threadit 0 --inputorder --adjustdirection --kimu
 **2. Rename your sequences** <br>
 - Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor.
 - Make sure that the reference sequence (e.g., either "KO3455" or "HXB2" for subtype B) is not in any of the sequences names, except the reference sequence.
+- Make sure that sequence names do not end with special characters, such as "_".
 
 **3. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
 - Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.
@@ -81,6 +82,9 @@ The Excel templates contains 3 tabs:
     - Fill the "Inversions columns" with `Y` for inversions, or `N` otherwise.
 - Hyperlinks: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results
     - Fill the "Hyperink" column with the URL links of the results from QCTool and Gene Cutter (that were sent to your email).
+ 
+**8. OPTIONAL: Fill out the R script titled ["IntactnessandClonality.R"](https://github.com/alemi055/IntegrityAlgorithm/blob/main/IntactnessandClonality.R)** <br>
+This R script contains both functions, `HIV_IntegrityAnalysis()` and `Clonality_Analysis()`. The user only has to replace the `TO_FILL` by its values.
  
 ### Files in directory before running the algorithm
 - [x] The FASTA file containing the aligned sequences + reference sequence (HXB2)
@@ -169,6 +173,38 @@ If it is a clone, a message will appear: "All sequences are identical. Options w
 | --- | --- |
 | `intactness_summary.csv` | Summary of **hierarchized** defects for all sequences |
 | `[donor]_ClonalityAnalysis.csv` | Can be found in the **Clonality** subfolder. List of clones and potential clones for each of the donor's sequences |
+
+# Troubleshooting
+
+### Cannot open connection
+
+```
+Warning in file(file, ifelse(append, "a", "w")): cannot open file 'tmp/Analyzed_QCTool.csv': No such file or directory
+Error in file(file, ifelse(append, "a", "w")): cannot open the connection
+```
+
+This error occurs when the user does not have administrative rights. To fix this error, manually create the folders `tmp` and `FINAL_OUTPUT` and try again.
+
+### Differing number of rows
+
+```
+Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 11, 10
+```
+
+This type of error occurs when the reference sequence is included (or not) in ProSeq-IT's Excel file, and the argument `ProseqIT_RefSeq` has not been modified accordingly (`TRUE` or `FALSE`).
+
+### Sequence names or number of sequences are not the same in all files
+
+```
+Error in IntegrateInfo(template_filename) :                                                                      
+The number of sequences or the sequence names are not the same (or are not in the same order) in all files.
+```
+
+This indicates that either the number of sequences or their names (or both) are not the same in all files ("Analyzed_QCTool.csv", "Analyzed_GeneCutter.csv", "Analyzed_ProseqIT.csv", and the Excel template). <br>
+
+Verify each file to identify which tool is causing the problem. <br>
+
+This can happen when sequence names end with a special character (e.g., "_"), as QC Tool removes them automatically (while the other tools do not).
 
 # Datasets
 | Paper | GenBank accession numbers | PopSet |

@@ -184,13 +184,18 @@ Error in file(file, ifelse(append, "a", "w")): cannot open the connection
 
 This error occurs when the user does not have administrative rights. To fix this error, manually create the folders `tmp` and `FINAL_OUTPUT` and try again.
 
-## Differing number of rows
+## Differing number of rows/replacement has 1 row, data has 0
 
 ```
 Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 11, 10
 ```
+or
+```
+Error in `$<-.data.frame`(`*tmp*`, "Large_inter_delet", value = "0") :                                                                                   
+  replacement has 1 row, data has 0
+```
 
-This type of error occurs when the reference sequence is included (or not) in ProSeq-IT's Excel file, and the argument `ProseqIT_RefSeq` has not been modified accordingly (`TRUE` or `FALSE`).
+These types of errors occur when the reference sequence is included (or not) in ProSeq-IT's Excel file, and the argument `ProseqIT_RefSeq` has not been modified accordingly (`TRUE` or `FALSE`).
 
 ## Sequence names or number of sequences are not the same in all files
 

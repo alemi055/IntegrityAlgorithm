@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on January 19, 2023
+# Updated on March 18, 2023
 # Command version
 
 ########################################################################################
@@ -690,7 +690,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
   # Find splitted FASTA files
   directory <- getwd()
   fasta <- list.files(paste0(directory, "/"), pattern = "_forClonality.fasta")
-
+  
   if (length(fasta) == 0){
     stop("There are no FASTA files to analyze the clonality.")
   }
@@ -705,6 +705,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
       cat(paste0("\n \'", i, "\'\n"))
       length_df <- NULL
       seqs <- read.FASTA(i)
+      seqs <- seqs[order(names(seqs))] # Order alphabetically
       # tmp_seqs <- NULL
       # count <- 1
 

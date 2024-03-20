@@ -737,7 +737,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
       cat(paste0("\n \'", i, "\'\n"))
       length_df <- NULL
       seqs <- read.FASTA(i)
-      seqs <- seqs[order(names(seqs))] # Order alphabetically
+      # seqs <- seqs[order(names(seqs))] # Order alphabetically
       # tmp_seqs <- NULL
       # count <- 1
 

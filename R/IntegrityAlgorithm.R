@@ -855,18 +855,18 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
 
       # For "potential clones", remove the clones of unique seqs
       unique_names <- names(potentialclones_list)
-      for (i in 1:length(potentialclones_list)){
-        if (length(potentialclones_list[[i]]) > 1){
+      for (j in 1:length(potentialclones_list)){
+        if (length(potentialclones_list[[j]]) > 1){
           tmp <- NULL
-          for (j in 1:length(potentialclones_list[[i]])){
-            if (potentialclones_list[[i]][j] %in% unique_names){
-              tmp <- c(tmp, potentialclones_list[[i]][j])
+          for (k in 1:length(potentialclones_list[[j]])){
+            if (potentialclones_list[[j]][k] %in% unique_names){
+              tmp <- c(tmp, potentialclones_list[[j]][k])
             }
           }
-          potentialclones_list[[i]] <- tmp
+          potentialclones_list[[j]] <- tmp
         }
       }
-      rm(i, j, tmp, unique_names) # Clean space
+      rm(j, tmp, unique_names) # Clean space
 
       # Format for a final df
       unique_seqs <- unique(names(clones_list))

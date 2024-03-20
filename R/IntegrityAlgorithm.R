@@ -46,23 +46,25 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
   check_logical(RefSeq, ProseqIT_RefSeq)
   check_integer(analyzes, 1)
 
-  if (analyzes == 1){
-    QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
-  }else if (analyzes == 2){
-    GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
-    ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
-  }else if (analyzes == 3){ # ProseqIT only
-    if (!file.exists("tmp/Analyzed_GeneCutter.csv")){
-      stop("The results from Gene Cutter are required before analyzing ProSeq-IT's.\nTo run Gene Cutter AND ProSeq-IT: \'analyzes = 2\'")
+  for (i in analyzes){
+    if (i == 1){
+      QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
+    }else if (i == 2){
+      GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
+      ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
+    }else if (i == 3){ # ProseqIT only
+      if (!file.exists("tmp/Analyzed_GeneCutter.csv")){
+        stop("The results from Gene Cutter are required before analyzing ProSeq-IT's.\nTo run Gene Cutter AND ProSeq-IT: \'analyzes = 2\'")
+      }
+      ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
+    }else if (i == 4){
+      IntegrateInfo(template_filename) # Integrate info
+    }else if (i == 5){
+      QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
+      GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
+      ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
+      IntegrateInfo(template_filename) # Integrate info
     }
-    ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
-  }else if (analyzes == 4){
-    IntegrateInfo(template_filename) # Integrate info
-  }else if (analyzes == 5){
-    QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
-    GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
-    ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
-    IntegrateInfo(template_filename) # Integrate info
   }
 }
 

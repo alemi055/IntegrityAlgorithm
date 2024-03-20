@@ -63,7 +63,8 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
       check_template(template_filename)
       check_QCTool(QCTool_summary)
       check_ProseqIT(ProseqIT_rx)
-      check_both_links(template_filename)
+      check_both_links(template_filename, "QCTool")
+      check_both_links(template_filename, "GeneCutter")
       check_logical(RefSeq, ProseqIT_RefSeq)
       check_integer(analyzes, 1)
       

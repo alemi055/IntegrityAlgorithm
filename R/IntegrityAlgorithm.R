@@ -40,26 +40,33 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
 
   # Double check the parameters input
   check_template(template_filename)
-  check_QCTool(QCTool_summary)
-  check_ProseqIT(ProseqIT_rx)
-  check_both_links(template_filename)
   check_logical(RefSeq, ProseqIT_RefSeq)
   check_integer(analyzes, 1)
 
   for (i in analyzes){
     if (i == 1){
+      check_QCTool(QCTool_summary)
+      check_both_links(template_filename, "QCTool")
       QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
     }else if (i == 2){
+      check_both_links(template_filename, "GeneCutter")
       GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
-      ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
     }else if (i == 3){ # ProseqIT only
       if (!file.exists("tmp/Analyzed_GeneCutter.csv")){
         stop("The results from Gene Cutter are required before analyzing ProSeq-IT's.\nTo run Gene Cutter AND ProSeq-IT: \'analyzes = 2\'")
       }
+      check_ProseqIT(ProseqIT_rx)
       ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
     }else if (i == 4){
       IntegrateInfo(template_filename) # Integrate info
     }else if (i == 5){
+      check_template(template_filename)
+      check_QCTool(QCTool_summary)
+      check_ProseqIT(ProseqIT_rx)
+      check_both_links(template_filename)
+      check_logical(RefSeq, ProseqIT_RefSeq)
+      check_integer(analyzes, 1)
+      
       QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
       GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
       ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
@@ -1385,30 +1392,33 @@ check_link_GC <- function(hyperlink){
 
 
 # Function 12
-check_both_links <- function(template_filename){
+check_both_links <- function(template_filename, tool){
   # (str) -> bool
   #
   # Input:
   #   - template_filename: the name of the Template file
+  #   - tool: name of the tool used (QCTool or Gene Cutter)
   #
   # Returns TRUE if the URL link provided are good, or FALSE otherwise
 
   hyperlinks <- as.data.frame(read_excel(template_filename, sheet = "Hyperlinks"))
 
-  # QCTool
-  tmp1 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "QCTool")]
-  if (is.na(tmp1) | tmp1 == ""){
-    stop("\nNo URL link was provided for QCTool.")
-  }else{
-    check_link_QC(tmp1)
-  }
-
-  # GeneCutter
-  tmp2 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "GeneCutter")]
-  if (is.na(tmp2) | tmp1 == ""){
-    stop("\nNo URL link was provided for GeneCutter.")
-  }else{
-    check_link_GC(tmp2)
+  if (tool == "QCTool"){
+    # QCTool
+    tmp1 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "QCTool")]
+    if (is.na(tmp1) | tmp1 == ""){
+      stop("\nNo URL link was provided for QCTool.")
+    }else{
+      check_link_QC(tmp1)
+    }
+  }else if (tool == "GeneCutter"){
+    # GeneCutter
+    tmp2 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "GeneCutter")]
+    if (is.na(tmp2) | tmp1 == ""){
+      stop("\nNo URL link was provided for GeneCutter.")
+    }else{
+      check_link_GC(tmp2)
+    }
   }
 }
 

@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on March 18, 2023
+# Updated on March 20, 2023
 # Command version
 
 ########################################################################################
@@ -23,7 +23,7 @@ library(ips)
                                     ##########################
 
 # MAIN FUNCTION 1 - HIV INTEGRITY ANALYSIS
-HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = TRUE, RefSeq = TRUE, analyzes = 4){
+HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_RefSeq = TRUE, RefSeq = TRUE, analyzes = 5){
   # (str, str, str, log, log) - > None
   #
   # Input:
@@ -32,7 +32,7 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
   #   - ProseqIT_rx: the name of the summary .xls file downloaded from ProSeq-IT
   #   - ProseqIT_RefSeq: logical. If TRUE, the reference sequence is included in ProSeq-IT's results.
   #   - RefSeq: logical. If TRUE, the reference sequence is included in QCTool's and Gene Cutter's results.
-  #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
+  #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: ProSeq-IT; 4: IntegrateInfo only; 5: All
   #
   # Analyzes the results from QCTool, GeneCutter, ProseqIT, as well as our manual
   # assessment with Geneious, and combine them. Exports a CSV file summarizing
@@ -51,9 +51,14 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
   }else if (analyzes == 2){
     GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
     ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
-  }else if (analyzes == 3){
-    IntegrateInfo(template_filename) # Integrate info
+  }else if (analyzes == 3){ # ProseqIT only
+    if (!file.exists("tmp/Analyzed_GeneCutter.csv")){
+      stop("The results from Gene Cutter are required before analyzing ProSeq-IT's.\nTo run Gene Cutter AND ProSeq-IT: \'analyzes = 2\'")
+    }
+    ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
   }else if (analyzes == 4){
+    IntegrateInfo(template_filename) # Integrate info
+  }else if (analyzes == 5){
     QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
     GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
     ProseqIT_analyzes(template_filename, ProseqIT_rx, ProseqIT_RefSeq) # ProseqIT
@@ -512,11 +517,14 @@ IntegrateInfo <- function(filename){
   for (i in 1:nrow(GC_excel)){
     stops <- strsplit(GC_excel$stop_codon[i], ", ")[[1]]
     stops <- gsub("Nef", "", stops) # Nef
-    if (length(grep("Tat", stops)) > 0){
-      if ((length(grep("Tat2", stops)) > 0) & (length(grep("Tat1", stops)) == 0)){ # Is it only Tat2?
-        stops <- gsub("Tat", "", stops) # Tat is not a defect
-      }
-    }
+    stops <- gsub("^Tat$", "", stops) # Tat
+    stops <- gsub("^Tat2$", "", stops) # Tat2
+
+    # if (length(grep("Tat", stops)) > 0){
+    #   if ((length(grep("Tat2", stops)) > 0) & (length(grep("Tat1", stops)) == 0)){ # Is it only Tat2?
+    #     stops <- gsub("Tat", "", stops) # Tat is not a defect
+    #   }
+    # }
     stops <- str_subset(stops, ".+") # Keep only those with at least one character
 
     if (length(stops) > 0){
@@ -546,14 +554,29 @@ IntegrateInfo <- function(filename){
 
   # 6 Small Internal Deletions #
 
-  # Deletion in Gag, Pol, Vif, Vpr, Tat, Rev, Vpu, or Env = defective
-  # Deletion in Nef only = not defective
+  # Defects in Gag, Pol, Vif, Vpr, Tat, Rev, Vpu, or Env = defective
+  # Defects in Nef only = not defective
+  # Stop codons in tat2 ONLY = not defective (for intactness)
+  
   small_intern_delet <- NULL
   colnames <- c("Gag_defects", "Pol_defects", "Vif_defects", "Vpr_defects", "Tat_defects", "Rev_defects", "Vpu_defects", "Env_defects", "Nef_defects", "rre_status")
 
   tmp <- ProseqIT_excel[,as.numeric(sapply(colnames, function(x){which(colnames(ProseqIT_excel) == x)}))]
-  tmp <- tmp[,-9] # Defect in Nef doesn't count as a small internal deletion
-  sum_sid <- as.numeric(apply(tmp, 1, sum))
+  tmp <- tmp[,-9] # Defects in Nef don't count as a small internal deletion
+  
+  # Check again for stop codons in tat2 only. If so, not critical for intactness
+  tmp_intactness_tat <- tmp
+  pos_tat <- which(tmp_intactness_tat$Tat_defects == 1)
+  for (i in pos_tat){
+    tmp2 <- ProseqIT_excel$Tat_defects_comments[i]
+    tmp2 <- gsub("tat2_stop_codon", "", tmp2)
+    tmp2 <- str_subset(tmp2, ".+") # Keep only those with at least one character
+    if (length(tmp2) == 0){
+      tmp_intactness_tat$Tat_defects[i] <- 0
+    }
+  }
+  
+  sum_sid <- as.numeric(apply(tmp_intactness_tat, 1, sum))
   for (i in 1:nrow(intact_summary)){
     if (sum_sid[i] > 0){
       small_intern_delet <- c(small_intern_delet, 1)
@@ -682,7 +705,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
   # Analyzes the clonality of the sequences
   
   # Double check the parameters input
-  check_integer(4, threshold)
+  check_integer(5, threshold)
 
   # Split_files
   Split_files(FASTA_file, donors)
@@ -821,6 +844,20 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
       }
       rm(clones, flag, flag2, j, k, l, matrix, nbp, ndiff, nseqs, pos_same_length, pos1, potentialclones, seqname, tmp) # Clean space
 
+      # For "potential clones", remove the clones of unique seqs
+      unique_names <- names(potentialclones_list)
+      for (i in 1:length(potentialclones_list)){
+        if (length(potentialclones_list[[i]]) > 1){
+          tmp <- NULL
+          for (j in 1:length(potentialclones_list[[i]])){
+            if (potentialclones_list[[i]][j] %in% unique_names){
+              tmp <- c(tmp, potentialclones_list[[i]][j])
+            }
+          }
+          potentialclones_list[[i]] <- tmp
+        }
+      }
+      rm(i, j, tmp, unique_names) # Clean space
 
       # Format for a final df
       unique_seqs <- unique(names(clones_list))
@@ -851,7 +888,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
       final_df$potential_clones <- gsub("NA", NA, final_df$potential_clones)
       class(final_df$nclones) <- class(final_df$npotential_clones) <- "numeric"
       rm(j, tmp_clones, nclones, tmp_potentialclones, npotentialclones) # Clean space
-
+      
       # Export
       if (!file.exists("FINAL_OUTPUT")){system("mkdir FINAL_OUTPUT")}
       if (!file.exists("FINAL_OUTPUT/Clonality")){system("mkdir FINAL_OUTPUT/Clonality")}
@@ -1159,10 +1196,20 @@ vif_vpr_tat_rev_vpu_nef_small_delet <- function(ProseqIT_rx, ProseqIT_criteria, 
     }
 
     # Look at stop codons
-    # If only Tat2, not a defect
-    pos2 <- match(Analyzed_GeneCutter$Name[grep(i, Analyzed_GeneCutter$stop_codon)], row.names(tmp))
-    tmp[pos2,1] <- 1
-    comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], paste0(lower_protein, "_stop_codon"))}else{comments[[x]] <- comments[[x]]}})
+    # If only Tat2, not a defect for the intactness, but is still counted
+    if (i == "Tat"){
+      pos_tat1 <- match(Analyzed_GeneCutter$Name[grep("Tat1", Analyzed_GeneCutter$stop_codon)], row.names(tmp))
+      pos_tat2 <- match(Analyzed_GeneCutter$Name[grep("Tat2", Analyzed_GeneCutter$stop_codon)], row.names(tmp))
+      tmp[pos_tat1,1] <- 1
+      tmp[pos_tat2,1] <- 1
+      comments <- lapply(1:length(comments), function(x){if (x %in% pos_tat1){comments[[x]] <- c(comments[[x]], paste0(lower_protein, "1_stop_codon"))}else{comments[[x]] <- comments[[x]]}})
+      comments <- lapply(1:length(comments), function(x){if (x %in% pos_tat2){comments[[x]] <- c(comments[[x]], paste0(lower_protein, "2_stop_codon"))}else{comments[[x]] <- comments[[x]]}})
+    }else{
+      pos2 <- match(Analyzed_GeneCutter$Name[grep(i, Analyzed_GeneCutter$stop_codon)], row.names(tmp))
+      tmp[pos2,1] <- 1
+      comments <- lapply(1:length(comments), function(x){if (x %in% pos2){comments[[x]] <- c(comments[[x]], paste0(lower_protein, "_stop_codon"))}else{comments[[x]] <- comments[[x]]}})
+    }
+    
 
     # Add comments to tmp object
     for (k in 1:length(comments)){
@@ -1387,13 +1434,13 @@ check_integer <- function(analyzes, threshold){
   # (int) -> None
   #
   # Input:
-  #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: IntegrateInfo only; 4: All
+  #   - analyzes: the functions to run. 1: QCTool only; 2: GeneCutter and ProSeq-IT; 3: ProSeq-IT; 4: IntegrateInfo only; 5: All
   #   - threshold: the threshold of different nucleotides between two sequences to consider them as "potential clones"
   #
   # Returns TRUE if the values are logical, or FALSE otherwise
 
-  if (analyzes != 1 & analyzes != 2 & analyzes != 3 & analyzes != 4){
-    stop("\nThe value provided for the argument \'analyzes\' is not an integer between 1 and 4.")
+  if (analyzes != 1 & analyzes != 2 & analyzes != 3 & analyzes != 4 & analyzes != 5){
+    stop("\nThe value provided for the argument \'analyzes\' is not an integer between 1 and 5.")
   }else if (threshold%%1 != 0){
     stop("\nThe value provided for the argument \'threshold\' is not an integer.")
   }

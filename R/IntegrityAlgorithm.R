@@ -1415,7 +1415,7 @@ check_both_links <- function(template_filename, tool){
   }else if (tool == "GeneCutter"){
     # GeneCutter
     tmp2 <- hyperlinks$Hyperlink[which(hyperlinks$Tool == "GeneCutter")]
-    if (is.na(tmp2) | tmp1 == ""){
+    if (is.na(tmp2) | tmp2 == ""){
       stop("\nNo URL link was provided for GeneCutter.")
     }else{
       check_link_GC(tmp2)

@@ -31,7 +31,7 @@ logical. If \samp{TRUE}, the reference sequence is included in ProSeq-IT's resul
 logical. If \samp{TRUE}, the reference sequence is included in QCTool's and Gene Cutter's results. Default is \samp{TRUE}
 }
   \item{analyzes}{
-integer. The functions to run. \samp{1}: QCTool only; \samp{2}: GeneCutter and ProSeq-IT; \samp{3}: IntegrateInfo only; \samp{4}: All. Default is \samp{4}
+integer. The functions to run. \samp{1}: QCTool only; \samp{2}: GeneCutter only; \samp{3}: ProSeq-IT only; \samp{4}: IntegrateInfo only; \samp{5}: All. Default is \samp{5}
 }
 }
 \details{

@@ -12,7 +12,7 @@ For donor and for each unique sequence, it returns the number and names of its c
 It outputs the results in the \strong{Clonality} folder, in the \strong{FINAL_OUTPUT} folder).
 }
 \usage{
-Clonality_Analysis(FASTA_file, donors, threshold = 5)
+Clonality_Analysis(FASTA_file, donors, threshold = 1)
 }
 \arguments{
   \item{FASTA_file}{
@@ -22,7 +22,7 @@ name of the FASTA file containing all the aligned sequences
 vector string containing the names of the donors. Use \samp{c()} if more than one donor
 }
   \item{threshold}{
-integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}. Default is \samp{5}
+integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}. Default is \samp{1}
 }
 }
 \details{

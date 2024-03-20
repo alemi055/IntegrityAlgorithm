@@ -14,6 +14,9 @@ check_both_links(template_filename)
   \item{template_filename}{
 the name of the Excel template file
 }
+  \item{tool}{
+the name of the tool used (QCTool or Gene Cutter)
+}
 }
 \details{
 This function is used at the beginning of the main function \samp{HIV_IntegrityAnalysis()}.

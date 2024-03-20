@@ -124,7 +124,7 @@ HIV_IntegrityAnalysis(template_filename, QCTool_summary, ProseqIT_rx, ProseqIT_R
 | `ProseqIT_rx` | Required | Excel file containing the results from ProSeq-IT |
 | `ProseqIT_RefSeq` | Optional; default if `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in ProSeq-IT's results. It should be renamed to "Reference_sequence" (see [instructions](#before-running-the-algorithm))  |
 | `RefSeq` | Optional argument; default is `TRUE` | Logical. If TRUE, the reference sequence (HXB2) is included in QCTool and GeneCutter's results |
-| `analyzes` | optional argument; default is `4` | Specifies the analyzes to be done: <br> ``1`` QCTool only <br>``2`` Gene Cutter and ProSeq-IT only <br> ``3`` ProSeq-IT only <br>``4`` IntegrateInfo only <br> ``5`` All |
+| `analyzes` | optional argument; default is `5` | Specifies the analyzes to be done: <br> ``1`` QCTool only <br>``2`` Gene Cutter only <br> ``3`` ProSeq-IT only <br>``4`` IntegrateInfo only <br> ``5`` All |
 
 ## Clonality_Analysis()
 

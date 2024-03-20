@@ -1452,8 +1452,8 @@ check_integer <- function(analyzes, threshold){
   # Returns TRUE if the values are logical, or FALSE otherwise
 
   for (i in analyzes){
-    if (analyzes != 1 & analyzes != 2 & analyzes != 3 & analyzes != 4 & analyzes != 5){
-      stop("\nThe value provided for the argument \'analyzes\' is not an integer between 1 and 5.")
+    if (i != 1 & i != 2 & i != 3 & i != 4 & i != 5){
+      stop("\nThe value(s) provided for the argument \'analyzes\' is not an integer between 1 and 5.")
     }else if (threshold%%1 != 0){
       stop("\nThe value provided for the argument \'threshold\' is not an integer.")
     }

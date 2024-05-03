@@ -132,24 +132,24 @@ To analyze the clonality of the HIV proviruses, run the function `Clonality_Anal
 
 ![Figure 2. ClonalityAnalysis](/Images/240212_ClonalityImage_GitHub.jpg)
 
-1. Files in the FASTA file input will be splitted according to the list of donors supplied. Donors with single sequences will not be analyzed.
+1. Files in the FASTA file input will be splitted according to the list of participants supplied. participants with single sequences will not be analyzed.
 2. The clonality will be assessed on each of the splitted files. A list of clones (0 different nt between two sequences) and potential clones, established by a threshold, will be output.
 
 ```
-Clonality_Analysis(FASTA_file, donors, threshold)
+Clonality_Analysis(FASTA_file, participants, threshold)
 ```
 | Argument | Required/Optional | Note |
 | --- | --- | --- |
 | `FASTA_file` | Required | FASTA file containing all sequences, including the reference sequence (HXB2) |
-| `donors` | Required | Str vector containing the list of donors. If more than one, use the `c()` function |
+| `participants` | Required | Str vector containing the list of participants. If more than one, use the `c()` function |
 | `threshold` | Optional; default is `1` | Threshold number of different nucleotides to consider two sequences as "potential clones" |
 
 ## To confirm clones and potential clones in Geneious
-1. Import the "donor1_forClonality.fasta" file into Geneious. In the imported alignment, select all sequences.
+1. Import the "participant1_forClonality.fasta" file into Geneious. In the imported alignment, select all sequences.
 3. ``Extract regions`` :arrow_right: ``Extract region as a list of sequences``.
 4. Select the newly created list.
 5. ``Workflows`` :arrow_right: ``Run Workflow`` :arrow_right: ``Extract Sequences By Name``
-6. Write the name of the unique sequence in the ``Names to Extract`` box. Then, write ``, `` (comma followed by a space) and the names of the clones/potential clones [copied-pasted from the **clones** and **potential clones** columns, in the "donor1_ClonalityAnalysis.csv" output files.]
+6. Write the name of the unique sequence in the ``Names to Extract`` box. Then, write ``, `` (comma followed by a space) and the names of the clones/potential clones [copied-pasted from the **clones** and **potential clones** columns, in the "participant1_ClonalityAnalysis.csv" output files.]
 7. From that, it is going to create a new sublist of sequences. Reselect all the sequences from this sublist and ``Extract regions``.
 8. Select all the extracted sequences from the sublist.
 9. ``Multiple Align`` :arrow_right: ``MAFFT Alignment`` <br>
@@ -171,7 +171,7 @@ If it is a clone, a message will appear: "All sequences are identical. Options w
 | Output file | Note |
 | --- | --- |
 | `intactness_summary.csv` | Summary of **hierarchized** defects for all sequences |
-| `[donor]_ClonalityAnalysis.csv` | Can be found in the **Clonality** subfolder. List of clones and potential clones for each of the donor's sequences |
+| `[participant]_ClonalityAnalysis.csv` | Can be found in the **Clonality** subfolder. List of clones and potential clones for each of the participant's sequences |
 
 # Troubleshooting
 

@@ -32,7 +32,7 @@ library(IntegrityAlgorithm)
                                   # 2 Run the Algorithm #
                                   #######################
 
-# Replace the "TO_FILL" with the names of your files/donors
+# Replace the "TO_FILL" with the names of your files/participants
 
 # Assess the intactness of your sequences
 HIV_IntegrityAnalysis(
@@ -45,8 +45,8 @@ HIV_IntegrityAnalysis(
 # Assess the Clonality of your sequences
 Clonality_Analysis(
   FASTA_file = "TO_FILL.fasta", # Name of the FASTA file containing all seqs
-  donors = c("TO_FILL", "TO_FILL", "TO_FILL") # Name of the donors
-  # Default threshold is 5
+  participants = c("TO_FILL", "TO_FILL", "TO_FILL") # Name of the participants
+  # Default threshold is 1
 )
 
 ########################################################################################

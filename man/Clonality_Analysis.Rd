@@ -7,26 +7,26 @@ Assess the clonality of HIV proviruses
 \description{
 This function assesses the clonality of HIV proviruses.
 
-For donor and for each unique sequence, it returns the number and names of its clones and the number and names of its \strong{potential clones}, if applicable.
+For participant and for each unique sequence, it returns the number and names of its clones and the number and names of its \strong{potential clones}, if applicable.
 
 It outputs the results in the \strong{Clonality} folder, in the \strong{FINAL_OUTPUT} folder).
 }
 \usage{
-Clonality_Analysis(FASTA_file, donors, threshold = 1)
+Clonality_Analysis(FASTA_file, participants, threshold = 1)
 }
 \arguments{
   \item{FASTA_file}{
 name of the FASTA file containing all the aligned sequences
 }
-  \item{donors}{
-vector string containing the names of the donors. Use \samp{c()} if more than one donor
+  \item{participants}{
+vector string containing the names of the participants. Use \samp{c()} if more than one participant
 }
   \item{threshold}{
 integer. The threshold of different nucleotides between two sequences to consider them as \strong{potential clones}. Default is \samp{1}
 }
 }
 \details{
-To analyze the data, the function first splits the FASTA file into shorter FASTA files, splitted by donor (one file per donor).
+To analyze the data, the function first splits the FASTA file into shorter FASTA files, splitted by participant (one file per participant).
 
 It then creates a matrix of sequence length and paired-comparisons are only done with sequences with the same length, or \eqn{\302\261} the threshold.
 

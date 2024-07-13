@@ -704,12 +704,12 @@ IntegrateInfo <- function(filename){
 
 
 # MAIN FUNCTION 6
-Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
+Clonality_Analysis <- function(FASTA_file, participants, threshold = 1){
   # (int) -> None
   #
   # Input:
   #   - FASTA_file: name of the FASTA file containing all aligned sequences.
-  #   - donors: name of the donors. Use c() if more than one donor.
+  #   - participants: name of the participants. Use c() if more than one participant.
   #   - threshold: the threshold of different nucleotides between two sequences to consider them as "potential clones"
   #
   # Analyzes the clonality of the sequences
@@ -718,7 +718,7 @@ Clonality_Analysis <- function(FASTA_file, donors, threshold = 1){
   check_integer(5, threshold)
 
   # Split_files
-  Split_files(FASTA_file, donors)
+  Split_files(FASTA_file, participants)
 
   # Find splitted FASTA files
   directory <- getwd()
@@ -1528,35 +1528,35 @@ identical_seqs <- function(matrix){
 
 
 # Function 18
-Split_files <- function(FASTA_file, donors){
+Split_files <- function(FASTA_file, participants){
   # (str, str) -> None
   #
   # Input:
   #   - FASTA_file: name of the FASTA file containing all aligned sequences.
-  #   - donors: name of the donors. Use c() if more than one donor.
+  #   - participants: name of the participants. Use c() if more than one participant.
   #
-  # Split the sequences in individual files (per donor)
+  # Split the sequences in individual files (per participant)
 
   check_FASTA(FASTA_file)
   all_seqs <- read.FASTA(FASTA_file)
 
-  # pb <- txtProgressBar(min = 1, max = length(donors), style = 3, width = 50, char = "=") # Add progress bar
+  # pb <- txtProgressBar(min = 1, max = length(participants), style = 3, width = 50, char = "=") # Add progress bar
   cat("\nNow splitting sequences into individual files...\n")
 
-  for (i in 1:length(donors)){
+  for (i in 1:length(participants)){
     # setTxtProgressBar(pb, i)
-    pos <- grep(donors[i], names(all_seqs))
+    pos <- grep(participants[i], names(all_seqs))
     if (length(pos) > 0){
-      # cat(paste0("Now doing donor \'", donors[i], "\'\n"))
+      # cat(paste0("Now doing participant \'", participants[i], "\'\n"))
       tmp <- all_seqs[pos]
       if (length(tmp) > 1){
-        write.FASTA(tmp, paste0(donors[i], "_forClonality.fasta"))
+        write.FASTA(tmp, paste0(participants[i], "_forClonality.fasta"))
       }else{
-        cat(paste0("   - The donor with the name \'", donors[i], "\' only had 1 sequence. No file created.\n"))
+        cat(paste0("   - The participant with the name \'", participants[i], "\' only had 1 sequence. No file created.\n"))
       }
 
     }else{
-      cat(paste0("   - The donor with the name \'", donors[i], "\' could not be found.\n"))
+      cat(paste0("   - The participant with the name \'", participants[i], "\' could not be found.\n"))
     }
   }
   cat("Done.\n")

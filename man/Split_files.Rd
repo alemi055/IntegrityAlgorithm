@@ -5,17 +5,17 @@
 Split the FASTA file
 }
 \description{
-This function splits the FASTA file into shorter FASTA files, splitted by donor (one file per donor)
+This function splits the FASTA file into shorter FASTA files, splitted by participant (one file per participant)
 }
 \usage{
-Split_files(FASTA_file, donors)
+Split_files(FASTA_file, participants)
 }
 \arguments{
   \item{FASTA_file}{
 name of the FASTA file containing all the aligned sequences.
 }
-  \item{donors}{
-vector string containing the names of the donors. Use \samp{c()} if more than one donor.
+  \item{participants}{
+vector string containing the names of the participants. Use \samp{c()} if more than one participant.
 }
 }
 \details{

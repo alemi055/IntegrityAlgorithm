@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on March 20, 2023
+# Updated on November 19, 2024
 # Command version
 
 ########################################################################################
@@ -485,7 +485,37 @@ IntegrateInfo <- function(filename){
 
   # Check if the seq names of all analyzed tools are the same. If not, compute error
   if (!(all(sapply(list(manual_excel$Name, ProseqIT_excel$Name, QCTool_excel$SeqName, GC_excel$Name), FUN = identical, manual_excel$Name)))){
-    stop("\nThe number of sequences or the sequence names are not the same (or are not in the same order) in all files.")
+    # Is the number of sequence the same, but just not in the same order?
+    tmp_df <- list(GC_excel, manual_excel, ProseqIT_excel, QCTool_excel)
+    if (!(all(sapply(tmp_df, nrow) == nrow(tmp_df[[1]])))){
+      stop(paste0("\nThe number of sequences is not the same in all files.\n\n-> Analyzed_QCTool.csv (in 'tmp' folder) = ", nrow(QCTool_excel),
+                  " seqs\n-> Analyzed_GeneCutter.csv (in 'tmp' folder) = ", nrow(GC_excel), " seqs\n-> Analyzed_ProseqIT.csv (in 'tmp' folder) = "), nrow(ProseqIT_excel),
+                  " seqs\n-> ", filename, " = ", nrow(manual_excel), " seqs\n\n Please verify each file individually.")
+    }else{
+      # Which file is missing the sequence name?
+      test_names[[1]] <- setdiff(GC_excel$Name, QCTool_excel$SeqName)
+      test_names[[2]] <- setdiff(manual_excel$Name, GC_excel$Name)
+      test_names[[3]] <- setdiff(GC_excel$Name, ProseqIT_excel$Name)
+      test_names[[4]] <- setdiff(GC_excel$Name, manual_excel$Name)
+      test1 <- as.numeric(lapply(test_names, length))
+      pos <- which(test1 > 0)
+      tmp_names <- NULL
+      if (length(pos) > 0){
+        if (1 %in% pos){
+          tmp_names <- c(tmp_names, paste0("Sequence(s) missing in Analyzed_QCTool.csv (in 'tmp' folder): ", paste0(test_names[[1]], collapse = ", ")))
+        }
+        if (2 %in% pos){
+          tmp_names <- c(tmp_names, paste0("Sequence(s) missing in Analyzed_GeneCutter.csv (in 'tmp' folder): ", paste0(test_names[[2]], collapse = ", ")))
+        }
+        if (3 %in% pos){
+          tmp_names <- c(tmp_names, paste0("Sequence(s) missing in Analyzed_ProseqIT.csv (in 'tmp' folder): ", paste0(test_names[[3]], collapse = ", ")))
+        }
+        if (4 %in% pos){
+          tmp_names <- c(tmp_names, paste0("Sequence(s) missing in ", filename, ": ", paste0(test_names[[4]], collapse = ", ")))
+        }
+      }
+      stop(paste0("\nThe sequence names are not the same in all files.\n\n-> ", paste0(tmp_names, collapse = "\n-> ")))
+    }
   }
 
   # Intactness summary + sequence length + number of main defects + empty column

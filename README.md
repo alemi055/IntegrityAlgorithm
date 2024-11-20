@@ -53,7 +53,8 @@ mafft --thread 8 --threadtb 5 --threadit 0 --inputorder --adjustdirection --kimu
 
 **2. Rename your sequences** <br>
 - Sequence names cannot contain spaces. Rename and simplify your sequence names using a text editor (or any other software).
-- Make sure that the reference sequence (e.g., either "KO3455" or "HXB2" for subtype B) is not in any of the sequences names, except the reference sequence.
+- Make sure that "KO3455" or "HXB2" (for subtype B) is not in any of the sequences names, except the reference sequence.
+- For QCTool and Gene Cutter only (for ProSeq-IT, refer to step #5): **When including the reference sequence in your FASTA file, please make sure that it *does* contain 'HXB2', 'K03455', or 'Reference_sequence'**.
 
 **3. Submit your FASTA file to [HIV Database QCTool](https://www.hiv.lanl.gov/content/sequence/QC/index.html)** <br>
 - Submit the FASTA file of aligned, primers-free, proviral sequences (including the reference sequence, usually HXB2). The results will be returned by email.
@@ -79,6 +80,7 @@ The Excel templates contains 3 tabs:
 - Manual_assessment: contains the results of the manual assessment with Geneious (to identify inversions) <br>
     - Fill the "Name column" with the names of the sequences.
     - Fill the "Inversions columns" with `Y` for inversions, or `N` otherwise.
+	- Make sure that the names are the same as in your FASTA file. Do not include the reference sequence.
 - Hyperlinks: contains the hyperlinks of HIV Database QCTool and Gene Cutter's results
     - Fill the "Hyperink" column with the URL links of the results from QCTool and Gene Cutter (that were sent to your email).
  

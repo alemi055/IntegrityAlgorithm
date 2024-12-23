@@ -4,7 +4,7 @@
 ########################################################################################
 
 # Audrée Lemieux
-# Updated on November 19, 2024
+# Updated on December 23, 2024
 # Command version
 
 ########################################################################################
@@ -60,13 +60,13 @@ HIV_IntegrityAnalysis <- function(template_filename, QCTool_summary, ProseqIT_rx
     }else if (i == 4){
       IntegrateInfo(template_filename) # Integrate info
     }else if (i == 5){
-      check_template(template_filename)
+      # check_template(template_filename)
       check_QCTool(QCTool_summary)
       check_ProseqIT(ProseqIT_rx)
       check_both_links(template_filename, "QCTool")
       check_both_links(template_filename, "GeneCutter")
-      check_logical(RefSeq, ProseqIT_RefSeq)
-      check_integer(analyzes, 1)
+      # check_logical(RefSeq, ProseqIT_RefSeq)
+      # check_integer(analyzes, 1)
       
       QCTool_analyzes(template_filename, QCTool_summary, RefSeq) # QCTool
       GeneCutter_analyzes(template_filename, RefSeq) # GeneCutter
@@ -97,7 +97,7 @@ QCTool_analyzes <- function(filename, summary, RefSeq = TRUE){
 
   # Clean QCTool summary file
   lines <- readLines(summary)
-  lines <- gsub("Cannot determine|Cannot Determine", "Cannotdetermine", lines)
+  lines <- gsub("[Cc]annot [Dd]etermine", "Cannotdetermine", lines)
   QCTool_excel <- read.table(textConnection(lines), header = T, sep = " ", row.names = NULL)
   QCTool_excel[,ncol(QCTool_excel)-1] <- paste0(QCTool_excel[,ncol(QCTool_excel)-1], " ", QCTool_excel[,ncol(QCTool_excel)]) # Resolve the last column (% of ACGT)
   colnames(QCTool_excel) <- c(colnames(QCTool_excel[2:ncol(QCTool_excel)]), "X")
@@ -164,11 +164,12 @@ QCTool_analyzes <- function(filename, summary, RefSeq = TRUE){
   cols_to_keep <- c("SeqName", "StopCodons", "stop_comments", "IncompleteCodons", "Hypermutation")
   QCTool_excel <- QCTool_excel[,(match(cols_to_keep, colnames(QCTool_excel)))]
   if (RefSeq){ # If RefSeq is present - by default = TRUE
-    pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", QCTool_excel$SeqName)
+    pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence|[Rr]eference [Ss]equence", QCTool_excel$SeqName)
+    # pos <- grep("K03455|HXB2", QCTool_excel$SeqName)
     if (length(pos) == 0){
       stop("\nRefSeq = TRUE. The reference sequence could not be found in QCTool's output (doesn't contain \'K03455\', \'HXB2\', or \'Reference_sequence\')")
     }
-    QCTool_excel <- QCTool_excel[-pos,] # Remove RefSeq (first line)
+    QCTool_excel <- QCTool_excel[-pos,] # Remove RefSeq
   }
   rm(cols_to_keep) # Clean space
 
@@ -249,7 +250,8 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
 
         if (i == 1){ # Create the data frame and data list to store the analyzed data
           if (RefSeq){
-            pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
+            # pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
+            pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence|[Rr]eference [Ss]equence", parsed_df$seqn)
             if (length(pos) == 0){
               stop("\nRefSeq = TRUE. The reference sequence could not be found in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\', or \'Reference_sequence\')")
             }
@@ -268,7 +270,7 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
 
         parsed_df <- parsed_df[1:((which(is.na(parsed_df[1]) & is.na(parsed_df[2]))[1])-1),]  # Only keep first positions
         if (RefSeq & i != 1){ # If RefSeq is present - by default = TRUE
-          pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", parsed_df$seqn)
+          pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence|[Rr]eference [Ss]equence", parsed_df$seqn)
           if (length(pos) == 0){
             stop("\nRefSeq = TRUE. The reference sequence could not be found in Gene Cutter's output (doesn't contain \'K03455\', \'HXB2\', or \'Reference_sequence\')")
           }
@@ -345,6 +347,12 @@ GeneCutter_analyzes <- function(filename, RefSeq = TRUE){
     ncol <- rbind(newcol, tmp)
   }))
   colnames(newcol) <- "start_codon"
+  
+  # Just to make sure
+  pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence|[Rr]eference [Ss]equence", names(data_list_stop))
+  if (length(pos) > 0){
+    data_list_stop <- data_list_stop[-pos]
+  }
 
   newcol2 <- NULL # Start codons
   newcol2 <- as.data.frame(sapply(data_list_stop, function(x){
@@ -402,8 +410,8 @@ ProseqIT_analyzes <- function(filename, ProseqIT_filename, ProseqIT_RefSeq = TRU
 
   # # Is the RefSeq present in the file? In theory, should be.
   if (ProseqIT_RefSeq){
-    pos2 <- grep("K03455|HXB2|[Rr]eference_[Ss]equence", ProseqIT_excel$ID)
-    if (length(pos) == 0){
+    pos2 <- grep("K03455|HXB2|[Rr]eference_[Ss]equence|[Rr]eference [Ss]equence", ProseqIT_excel$ID)
+    if (length(pos2) == 0){
       stop("\nProseqIT_RefSeq = TRUE. The reference sequence could not be found in ProSeq-IT's output (has not been renamed to \'Reference_sequence\')")
     }
     ProseqIT_excel <- ProseqIT_excel[-pos2,]
@@ -476,6 +484,12 @@ IntegrateInfo <- function(filename){
 
   # Load template for manual assessment
   manual_excel <- read_excel(paste0(directory, "/", filename), sheet = "Manual_assessment")
+  
+  # Just in case
+  pos <- grep("K03455|HXB2|[Rr]eference_[Ss]equence|[Rr]eference [Ss]equence", manual_excel$Name)
+  if (length(pos) > 0){
+    manual_excel <- manual_excel[-pos,]
+  }
 
   # Put all sequences in alphabetical order
   manual_excel <- manual_excel[order(manual_excel$Name),]
@@ -1351,7 +1365,9 @@ check_template <- function(template_filename){
   }else if (length(grep(template_filename, files_directory)) == 0){
     stop("\nThe template file provided could not be found in your current directory.")
   }else if (!all(excel_sheets(template_filename) == c("ProseqIT_criteria", "Manual_assessment", "Hyperlinks"))){
-    stop("\nOne or more sheets are missing from the template file provided.")
+    tmp <- setdiff(c("ProseqIT_criteria", "Manual_assessment", "Hyperlinks"), excel_sheets(template_filename))
+    stop(paste0("\nThe following sheets are missing from the template file provided:\n-> "), 
+         paste0(tmp, collapse = "\n-> "))
   }
 }
 
